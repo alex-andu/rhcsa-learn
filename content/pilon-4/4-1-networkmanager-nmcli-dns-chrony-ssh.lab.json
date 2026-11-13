@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Configurarea `node2` ca Server NTP Local și Verificarea `nmcli`"
+      },
+      "action": {
+        "ro": "Pe **`node2.lab.example.com` (`192.168.122.102`)**:\n```bash\n# 1. Configurăm chronyd pe node2 să accepte cereri NTP din rețeaua 192.168.122.0/24 chiar și fără internet (local stratum 10):\n[root@node2 ~]# dnf install -y chrony\n[root@node2 ~]# cat << 'EOF' >> /etc/chrony.conf\nallow 192.168.122.0/24\nlocal stratum 10\nEOF\n[root@node2 ~]# systemctl enable --now chronyd\n[root@node2 ~]# systemctl restart chronyd\n\n# 2. Deschidem serviciul ntp (port 123/udp) în firewall pe node2:\n[root@node2 ~]# firewall-cmd --permanent --add-service=ntp\n[root@node2 ~]# firewall-cmd --reload\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Configurarea Rețelei cu `nmcli`, Hostname și Client `chrony` pe `node1`"
+      },
+      "action": {
+        "ro": "Acum ne conectăm pe **`node1.lab.example.com` (`192.168.122.101`)**:\n\n```bash\n# 1. Setăm persistent Hostname-ul și populăm /etc/hosts pentru ambele noduri:\n[root@node1 ~]# hostnamectl set-hostname node1.lab.example.com\n[root@node1 ~]# cat << 'EOF' >> /etc/hosts\n192.168.122.101   node1.lab.example.com   node1\n192.168.122.102   node2.lab.example.com   node2\nEOF\n\n# 2. Identificăm numele conexiunii active în NetworkManager:\n[root@node1 ~]# ACTIVE_CON=$(nmcli -t -f NAME con show --active | head -n 1)\n[root@node1 ~]# echo \"Conexiunea activa este: $ACTIVE_CON\"\n\n# 3. Adăugăm o adresă IP secundară de test (192.168.122.201/24) și ne asigurăm că autoconnect este yes:\n[root@node1 ~]# nmcli con mod \"$ACTIVE_CON\" +ipv4.addresses 192.168.122.201/24\n[root@node1 ~]# nmcli con mod \"$ACTIVE_CON\" connection.autoconnect yes\n[root@node1 ~]# nmcli con up \"$ACTIVE_CON\"\n\n# 4. Verificăm cu ip -br addr că ambele IP-uri (.101 și .201) sunt active pe interfață:\n[root@node1 ~]# ip -br addr show\n\n# 5. Configurăm clientul NTP chrony pe node1 să se sincronizeze cu node2 (192.168.122.102):\n[root@node1 ~]# sed -i 's/^pool /#pool /g' /etc/chrony.conf\n[root@node1 ~]# echo \"server 192.168.122.102 iburst\" >> /etc/chrony.conf\n[root@node1 ~]# systemctl enable --now chronyd\n[root@node1 ~]# systemctl restart chronyd\n\n# 6. Verificăm sincronizarea cu chronyc sources -v (așteptăm 3 secunde pentru iburst):\n[root@node1 ~]# sleep 3\n[root@node1 ~]# chronyc sources -v\n```"
+      }
+    }
+  ]
+}

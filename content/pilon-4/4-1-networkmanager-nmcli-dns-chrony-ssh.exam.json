@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Unde își salvează `NetworkManager` fișierele de configurare a conexiunilor în RHEL 9 și RHEL 10?"
+      },
+      "answer": {
+        "ro": "În directorul **`/etc/NetworkManager/system-connections/`** în fișiere cu extensia **`.nmconnection`**."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Care este diferența dintre `nmcli con mod \"enp1s0\" ipv4.addresses 10.0.0.5/24` și `nmcli con mod \"enp1s0\" +ipv4.addresses 10.0.0.5/24`?"
+      },
+      "answer": {
+        "ro": "Fără `+`, comanda **înlocuiește (suprascrie)** toate adresele IP existente pe acea conexiune. Cu **`+ipv4.addresses`**, păstrează IP-ul existent și **adaugă** un IP secundar."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "De ce este esențial cuvântul `iburst` la sfârșitul liniei `server 192.168.122.102 iburst` din `/etc/chrony.conf` în timpul examenului EX200?"
+      },
+      "answer": {
+        "ro": "Opțiunea **`iburst`** forțează `chronyd` să trimită o rafală rapidă de pachete imediat la pornire, realizând sincronizarea în câteva secunde în loc de câteva minute."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce simbol apare în fața numelui serverului NTP în output-ul comenzii `chronyc sources` atunci când ceasul s-a sincronizat cu succes cu acel server?"
+      },
+      "answer": {
+        "ro": "Simbolul **`^*`** (*Current best synced source*)."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Ce pagină de manual deschizi în timpul examenului dacă ai uitat sintaxa comenzii `nmcli` și vrei să vezi direct exemple complete?"
+      },
+      "answer": {
+        "ro": "**`man nmcli-examples`**."
+      }
+    }
+  ]
+}

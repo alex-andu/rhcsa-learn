@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Ce reprezintă variabila `$#` într-un script Bash și prin ce diferă de `$?`?"
+      },
+      "answer": {
+        "ro": "**`$#`** reprezintă **numărul de argumente** transmise scriptului în linia de comandă, în timp ce **`$?`** reprezintă **codul de retur (Exit Code)** al ultimei comenzi executate (`0` = succes)."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "De ce un script care are pe prima linie `#!/bin/bash`, dar are permisiunile `-rw-r--r--` (`0644`), dă eroarea `Permission denied` când este apelat cu `/usr/local/bin/script.sh`?"
+      },
+      "answer": {
+        "ro": "Pentru ca nucleul Linux să poată executa direct un fișier prin syscall-ul `execve()`, utilizatorul trebuie să aibă atât dreptul de citire (`r`), cât și **dreptul de execuție (`x`)** pe acel fișier (`chmod +x`)."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Cum redirecționezi un mesaj afișat cu `echo \"Eroare!\"` către fluxul `stderr` (`FD 2`) în interiorul unui script Bash?"
+      },
+      "answer": {
+        "ro": "Folosind redirecționarea descriptorului `1` (`stdout`) către `2` (`stderr`): **`echo \"Eroare!\" >&2`**."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "În ce fișier de pe disc își salvează daemonul `tuned` numele profilului activat în prezent?"
+      },
+      "answer": {
+        "ro": "În fișierul **`/etc/tuned/active_profile`**."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Care este diferența dintre operatorii `-z \"$VAR\"` și `-n \"$VAR\"` într-o condiție `if [[ ... ]]`?"
+      },
+      "answer": {
+        "ro": "**`-z \"$VAR\"`** este adevărat dacă variabila este **goală** (*Zero length*), iar **`-n \"$VAR\"`** este adevărat dacă variabila **nu este goală** (*Non-zero length*)."
+      }
+    }
+  ]
+}

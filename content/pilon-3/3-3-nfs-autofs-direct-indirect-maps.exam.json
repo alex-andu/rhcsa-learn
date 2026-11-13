@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este extensia obligatorie a fișierelor pe care le creăm în directorul `/etc/auto.master.d/`?"
+      },
+      "answer": {
+        "ro": "Extensia obligatorie în `/etc/auto.master.d/` este **`.autofs`**."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Cum își dă seama daemonul `automount` că o linie dintr-un fișier `.autofs` definește un **Direct Map** și nu un **Indirect Map**?"
+      },
+      "answer": {
+        "ro": "Un **Direct Map** are întotdeauna în prima coloană din fișierul `.autofs` simbolul special **`/-`** (în timp ce un *Indirect Map* are calea directorului părinte, de ex. `/rhome`)."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "În linia `*  -rw,sync  server.example.com:/rhome/&`, ce rol are caracterul `*` și ce rol are caracterul `&`?"
+      },
+      "answer": {
+        "ro": "Caracterul **`*`** (cheia) potrivește orice nume de subdirector cerut de utilizator în `/rhome/<ceva>`, iar caracterul **`&`** este înlocuit dinamic de `autofs` cu valoarea pe care a potrivit-o `*`!"
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce se întâmplă dacă uiți să pui semnul minus `-` în fața opțiunilor `rw,sync` într-un fișier `/etc/auto.*`?"
+      },
+      "answer": {
+        "ro": "Fără semnul `-`, `autofs` tratează `rw,sync` ca fiind al treilea câmp (locația serverului NFS) și nu mai poate monta partajarea."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "De ce atunci când dai `ls /rhome` imediat după ce ai pornit serviciul `autofs`, directorul `/rhome` pare complet gol (0 subdirectoare), deși pe serverul NFS există `remoteuser1` și `remoteuser2`?"
+      },
+      "answer": {
+        "ro": "Deoarece `autofs` montează subdirectoarele **DOAR la cerere (*on-demand*)**! Cât timp nimeni nu a cerut explicit `/rhome/remoteuser1`, subdirectorul nu este montat (decât dacă s-ar folosi opțiunea `--ghost` / `browse`). În secunda în care rulezi `ls /rhome/remoteuser1` sau `cd /rhome/remoteuser1`, subdirectorul apare și este montat automat!"
+      }
+    }
+  ]
+}

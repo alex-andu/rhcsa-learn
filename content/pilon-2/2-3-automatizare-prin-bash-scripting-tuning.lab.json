@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Construirea și Testarea unui Script de Examen EX200 pe `node1`"
+      },
+      "action": {
+        "ro": "Cerință: Creați scriptul `/usr/local/bin/system_search.sh` care:\n1. Primește un singur argument (`all` sau `suid`). Dacă este apelat cu `suid`, caută toate fișierele din `/usr/bin` care au bitul SUID setat și salvează lista lor în `/root/suid_list.txt`.\n2. Dacă este apelat cu `all`, afișează pe ecran numărul total de procese care rulează pe sistem.\n3. Dacă este apelat cu orice alt argument (sau fără niciun argument), afișează exact `Usage: /usr/local/bin/system_search.sh all|suid` și iese cu codul de retur `2`.\n\n```bash\n# 1. Scriem scriptul în /usr/local/bin/system_search.sh:\n[root@node1 ~]# cat << 'EOF' > /usr/local/bin/system_search.sh\n#!/bin/bash\n\nif [[ $# -ne 1 ]]; then\n    echo \"Usage: /usr/local/bin/system_search.sh all|suid\"\n    exit 2\nfi\n\nif [[ \"$1\" == \"suid\" ]]; then\n    find /usr/bin -type f -perm -4000 > /root/suid_list.txt 2>/dev/null\n    echo \"SUID files saved to /root/suid_list.txt\"\nelif [[ \"$1\" == \"all\" ]]; then\n    ps -e --no-headers | wc -l\nelse\n    echo \"Usage: /usr/local/bin/system_search.sh all|suid\"\n    exit 2\nfi\nEOF\n\n# 2. PASUL CRITIC: Acordăm permisiunea de execuție (+x)!\n[root@node1 ~]# chmod +x /usr/local/bin/system_search.sh\n\n# 3. Testăm toate cele 3 cazuri și verificăm codul de retur ($?):\n[root@node1 ~]# /usr/local/bin/system_search.sh\nUsage: /usr/local/bin/system_search.sh all|suid\n[root@node1 ~]# echo $?\n2\n[root@node1 ~]# /usr/local/bin/system_search.sh suid\nSUID files saved to /root/suid_list.txt\n[root@node1 ~]# /usr/local/bin/system_search.sh all\n142\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Configurarea Profilului `tuned` pe `node1` și `node2`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Instalăm și activăm persistent serviciul tuned:\n[root@node1 ~]# dnf install -y tuned\n[root@node1 ~]# systemctl enable --now tuned\n\n# 2. Aflăm profilul recomandat de tuned-adm:\n[root@node1 ~]# tuned-adm recommend\nvirtual-guest\n\n# 3. Aplicăm profilul recomandat și verificăm:\n[root@node1 ~]# tuned-adm profile virtual-guest\n[root@node1 ~]# tuned-adm active\nCurrent active profile: virtual-guest\n```"
+      }
+    }
+  ]
+}

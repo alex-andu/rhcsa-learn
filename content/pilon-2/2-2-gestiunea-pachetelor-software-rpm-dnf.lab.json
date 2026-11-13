@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Montarea Persistentă a DVD-ului ISO RHEL și Crearea Fișierului `/etc/yum.repos.d/local_dvd.repo`"
+      },
+      "action": {
+        "ro": "Execută acești pași atât pe **`node1`**, cât și pe **`node2`**:\n\n```bash\n# 1. Creăm punctul de montare /mnt/rhel_dvd:\n[root@node1 ~]# mkdir -p /mnt/rhel_dvd\n\n# 2. Adăugăm montarea PERSISTENTĂ în /etc/fstab pentru unitatea optică /dev/sr0 (tip iso9660, opțiuni ro,nofail):\n[root@node1 ~]# echo \"/dev/sr0  /mnt/rhel_dvd  iso9660  ro,nofail  0 0\" >> /etc/fstab\n\n# 3. Reîncărcăm systemd și montăm totul din /etc/fstab cu mount -a:\n[root@node1 ~]# systemctl daemon-reload\n[root@node1 ~]# mount -a\n\n# 4. Verificăm că vedem directoarele BaseOS și AppStream pe DVD:\n[root@node1 ~]# ls -la /mnt/rhel_dvd/\n# Trebuie să vezi directoarele AppStream și BaseOS!\n\n# 5. Creăm fișierul de repository /etc/yum.repos.d/local_dvd.repo:\n[root@node1 ~]# cat << 'EOF' > /etc/yum.repos.d/local_dvd.repo\n[Local-BaseOS]\nname=RHEL DVD - BaseOS Repository\nbaseurl=file:///mnt/rhel_dvd/BaseOS\nenabled=1\ngpgcheck=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release\n\n[Local-AppStream]\nname=RHEL DVD - AppStream Repository\nbaseurl=file:///mnt/rhel_dvd/AppStream\nenabled=1\ngpgcheck=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release\nEOF\n\n# 6. Curățăm cache-ul dnf și verificăm că ambele depozite sunt active și văd mii de pachete!\n[root@node1 ~]# dnf clean all\n[root@node1 ~]# dnf repolist -v\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Exerciții Practice cu `rpm` și `dnf`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Aflăm ce pachet furnizează utilitarul 'semanage' și îl instalăm:\n[root@node1 ~]# dnf provides */semanage\n[root@node1 ~]# dnf install -y policycoreutils-python-utils\n\n# 2. Listăm toate fișierele de configurare ale pachetului openssh-server:\n[root@node1 ~]# rpm -qc openssh-server\n\n# 3. Modificăm un comentariu în /etc/ssh/sshd_config și vedem cum îl detectează rpm -V:\n[root@node1 ~]# echo \"# Test audit RPM\" >> /etc/ssh/sshd_config\n[root@node1 ~]# rpm -V openssh-server\nS.5....T.  c /etc/ssh/sshd_config\n# Observă: S (Size schimbat), 5 (Hash SHA256 schimbat), T (Timestamp mtime schimbat), c (Config file)!\n# Ștergem ultima linie adăugată cu sed:\n[root@node1 ~]# sed -i '$d' /etc/ssh/sshd_config\n```"
+      }
+    }
+  ]
+}

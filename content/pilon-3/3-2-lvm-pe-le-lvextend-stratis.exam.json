@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 20,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este flag-ul comenzii `vgcreate` care setează dimensiunea unui *Physical Extent (PE)*, și cât este valoarea implicită dacă nu îl specifici?"
+      },
+      "answer": {
+        "ro": "Flag-ul este **`-s`** (ex: `vgcreate -s 16M`), iar valoarea implicită este **`4 MiB`**."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Care este diferența dintre `lvcreate -l 100 -n lv1 vg1` și `lvcreate -L 100M -n lv1 vg1`?"
+      },
+      "answer": {
+        "ro": "`-l 100` alocă **100 de Logical Extents** (a căror dimensiune în MiB depinde de `PE Size`-ul grupului de volume), în timp ce `-L 100M` alocă direct **100 MiB**."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Dacă ai rulat `lvextend -L 2G /dev/vg1/lv1` fără flag-ul `-r` pe un volum formatat `XFS` montat în `/data`, ce comandă trebuie să rulezi pentru ca și sistemul de fișiere să vadă cei 2 GB?"
+      },
+      "answer": {
+        "ro": "**`xfs_growfs /data`** (sau `lvextend -r`)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce opțiune de montare este obligatorie în coloana a 4-a din `/etc/fstab` pentru un sistem de fișiere `Stratis`?"
+      },
+      "answer": {
+        "ro": "**`defaults,x-systemd.requires=stratisd.service`**."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Cu ce comandă se creează un volum `VDO` în RHEL 9 / RHEL 10 după eliminarea vechii comenzi `vdo create` din RHEL 8?"
+      },
+      "answer": {
+        "ro": "**`lvcreate --type vdo -n <lv_name> -L <physical_size> -V <virtual_size> <vg_name>`** (documentată în `man lvmvdo`)."
+      }
+    }
+  ]
+}

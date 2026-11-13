@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Configurarea Serverului NFS pe `node2` (`192.168.122.102`)"
+      },
+      "action": {
+        "ro": "Execută aceste comenzi pe **`node2`**:\n\n```bash\n# 1. Instalăm nfs-utils și creăm structura de directoare exportate pe node2:\n[root@node2 ~]# dnf install -y nfs-utils\n[root@node2 ~]# mkdir -p /srv/nfs_public /rhome/remoteuser1 /rhome/remoteuser2\n\n# 2. Creăm utilizatorii remoteuser1 (UID 4001) și remoteuser2 (UID 4002) cu home-ul în /rhome:\n[root@node2 ~]# useradd -u 4001 -d /rhome/remoteuser1 -M remoteuser1\n[root@node2 ~]# useradd -u 4002 -d /rhome/remoteuser2 -M remoteuser2\n[root@node2 ~]# cp -a /etc/skel/. /rhome/remoteuser1/\n[root@node2 ~]# cp -a /etc/skel/. /rhome/remoteuser2/\n[root@node2 ~]# echo \"Fisierul lui remoteuser1 de pe serverul NFS\" > /rhome/remoteuser1/welcome.txt\n[root@node2 ~]# chown -R 4001:4001 /rhome/remoteuser1\n[root@node2 ~]# chown -R 4002:4002 /rhome/remoteuser2\n[root@node2 ~]# echo \"Documentatie Publica NFS\" > /srv/nfs_public/manual.txt\n[root@node2 ~]# chmod 0777 /srv/nfs_public\n\n# 3. Configurăm exporturile în /etc/exports:\n[root@node2 ~]# cat << 'EOF' > /etc/exports\n/srv/nfs_public   192.168.122.0/24(rw,sync,no_root_squash)\n/rhome            192.168.122.0/24(rw,sync,no_root_squash)\nEOF\n\n# 4. Pornim și activăm nfs-server, exportăm directoarele și deschidem firewall-ul pe node2:\n[root@node2 ~]# systemctl enable --now nfs-server\n[root@node2 ~]# exportfs -rav\n[root@node2 ~]# firewall-cmd --permanent --add-service={nfs,mountd,rpc-bind}\n[root@node2 ~]# firewall-cmd --reload\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Configurarea Clientului `autofs` pe `node1` (Direct Map + Indirect Wildcard Map!)"
+      },
+      "action": {
+        "ro": "Acum ne mutăm pe **`node1.lab.example.com` (`192.168.122.101`)** și rezolvăm cerințele oficiale de examen:\n\n```bash\n# 1. Creăm pe node1 aceiași utilizatori (cu aceleași UID-uri 4001 și 4002, dar FĂRĂ a le crea directorul /rhome cu -M!):\n[root@node1 ~]# useradd -u 4001 -d /rhome/remoteuser1 -M remoteuser1\n[root@node1 ~]# useradd -u 4002 -d /rhome/remoteuser2 -M remoteuser2\n[root@node1 ~]# echo \"flectrag\" | passwd --stdin remoteuser1\n[root@node1 ~]# echo \"flectrag\" | passwd --stdin remoteuser2\n\n# 2. Instalăm pachetele autofs și nfs-utils pe node1:\n[root@node1 ~]# dnf install -y autofs nfs-utils\n\n# 3. Configurăm atât un INDIRECT MAP (/rhome) cât și un DIRECT MAP (/-) în /etc/auto.master.d/exam.autofs:\n[root@node1 ~]# cat << 'EOF' > /etc/auto.master.d/exam.autofs\n/rhome   /etc/auto.rhome\n/-       /etc/auto.direct\nEOF\n\n# 4. Creăm fișierul de mapare INDIRECTĂ cu WILDCARD (/etc/auto.rhome):\n[root@node1 ~]# cat << 'EOF' > /etc/auto.rhome\n*   -rw,sync   192.168.122.102:/rhome/&\nEOF\n\n# 5. Creăm fișierul de mapare DIRECTĂ (/etc/auto.direct) pentru /mnt/public_docs:\n[root@node1 ~]# cat << 'EOF' > /etc/auto.direct\n/mnt/public_docs   -rw,sync   192.168.122.102:/srv/nfs_public\nEOF\n\n# 6. Activăm și pornim serviciul autofs la boot!\n[root@node1 ~]# systemctl enable --now autofs\n[root@node1 ~]# systemctl restart autofs\n\n# 7. MOMENTUL ADEVĂRULUI — Testăm montarea dinamică la cerere!\n# a) Ne logăm ca remoteuser1 (observă că nu dă nicio eroare de missing home directory și își găsește fișierul welcome.txt!):\n[root@node1 ~]# su - remoteuser1 -c \"pwd; ls -la; cat welcome.txt\"\n/rhome/remoteuser1\nFisierul lui remoteuser1 de pe serverul NFS\n\n# b) Accesăm direct /mnt/public_docs și verificăm că autofs l-a montat instantaneu:\n[root@node1 ~]# cat /mnt/public_docs/manual.txt\nDocumentatie Publica NFS\n[root@node1 ~]# df -Th | grep \"192.168.122.102\"\n```"
+      }
+    }
+  ]
+}

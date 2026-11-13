@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este extensia obligatorie pe care trebuie să o aibă orice fișier de configurare a depozitelor din directorul `/etc/yum.repos.d/`?"
+      },
+      "answer": {
+        "ro": "Extensia obligatorie este **`.repo`** (orice alt fișier din `/etc/yum.repos.d/` este ignorat de `dnf`)."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă în examen ți se dau URL-urile pentru `BaseOS` și `AppStream`, dar nu ți se specifică nicio cheie GPG, ce linie este obligatoriu să adaugi în fiecare secțiune a fișierului `.repo` pentru ca `dnf install` să nu eșueze?"
+      },
+      "answer": {
+        "ro": "**`gpgcheck=0`**."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Ce comandă `rpm` îți spune cărui pachet îi aparține fișierul `/etc/fstab` sau `/usr/bin/bash`?"
+      },
+      "answer": {
+        "ro": "**`rpm -qf <cale_fisier>`** (ex: `rpm -qf /usr/bin/bash`)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce comandă `dnf` folosești când știi numele unei comenzi (de ex. `sar` sau `iostat`), dar nu știi în ce pachet RPM se găsește?"
+      },
+      "answer": {
+        "ro": "**`dnf provides */<nume_comanda>`** (ex: `dnf provides */iostat` -> găsește pachetul `sysstat`)."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Cum anulezi complet ultima comandă `dnf install` rulată pe sistem (inclusiv toate dependențele pe care le-a tras după ea)?"
+      },
+      "answer": {
+        "ro": "Aflăm ID-ul ultimei tranzacții cu **`dnf history`** și apoi rulăm **`dnf history undo last`** (sau `dnf history undo <ID>`)."
+      }
+    }
+  ]
+}

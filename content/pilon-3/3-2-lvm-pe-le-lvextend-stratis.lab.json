@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Crearea unui LVM cu `PE = 16 MiB` și Număr Exact de Extents (`-l 50`)"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Creăm două partiții noi pe /dev/vdb (vdb6 de 1 GiB și vdb7 de 1 GiB) pentru LVM:\n[root@node2 ~]# parted -s /dev/vdb mkpart lvm_p1 5109MiB 6133MiB\n[root@node2 ~]# parted -s /dev/vdb mkpart lvm_p2 6133MiB 7157MiB\n[root@node2 ~]# parted -s /dev/vdb set 6 lvm on\n[root@node2 ~]# parted -s /dev/vdb set 7 lvm on\n[root@node2 ~]# partprobe /dev/vdb && udevadm settle\n\n# 2. Inițializăm Physical Volume-ul pe /dev/vdb6:\n[root@node2 ~]# pvcreate /dev/vdb6\n\n# 3. Creăm Volume Group-ul 'vg_datastore' cu Physical Extent (PE) de 16 MiB (-s 16M):\n[root@node2 ~]# vgcreate -s 16M vg_datastore /dev/vdb6\n\n# 4. Verificăm cu vgdisplay că PE Size este exact 16.00 MiB:\n[root@node2 ~]# vgdisplay vg_datastore | grep \"PE Size\"\n  PE Size               16.00 MiB\n\n# 5. Creăm Logical Volume-ul 'lv_database' cu exact 50 de Extents (-l 50 -> 50 x 16 = 800 MiB):\n[root@node2 ~]# lvcreate -l 50 -n lv_database vg_datastore\n\n# 6. Verificăm cu lvdisplay că are 50 LE și 800 MiB:\n[root@node2 ~]# lvdisplay /dev/vg_datastore/lv_database | grep -E \"LV Size|Current LE\"\n  LV Size                800.00 MiB\n  Current LE             50\n\n# 7. Îl formatăm cu ext4, îl adăugăm în /etc/fstab și îl montăm în /mnt/database:\n[root@node2 ~]# mkfs.ext4 /dev/vg_datastore/lv_database\n[root@node2 ~]# mkdir -p /mnt/database\n[root@node2 ~]# echo \"UUID=$(blkid -s UUID -o value /dev/vg_datastore/lv_database)  /mnt/database  ext4  defaults  0 0\" >> /etc/fstab\n[root@node2 ~]# systemctl daemon-reload && mount -a\n[root@node2 ~]# df -Th /mnt/database\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Extinderea Online a Grupului de Volume (`vgextend`) și a Volumului Logic (`lvextend -r`)"
+      },
+      "action": {
+        "ro": "Să presupunem că vrem să păstrăm datele din `/mnt/database` și să mărim `lv_database` de la `800 MiB` la **`1500 MiB`**, dar în `vg_datastore` mai avem doar `208 MiB` liberi!\n\n```bash\n# 1. Creăm un fișier martor în /mnt/database ca să demonstrăm că nu pierdem datele:\n[root@node2 ~]# echo \"Date critice de productie\" > /mnt/database/prod_record.txt\n\n# 2. Adăugăm a doua partiție (/dev/vdb7) în grupul de volume vg_datastore cu vgextend:\n[root@node2 ~]# vgextend vg_datastore /dev/vdb7\n[root@node2 ~]# vgs vg_datastore\n\n# 3. Extindem ONLINE atât volumul logic, cât și sistemul de fișiere ext4 la 1500 MiB folosind flag-ul -r:\n[root@node2 ~]# lvextend -r -L 1500M /dev/vg_datastore/lv_database\n\n# 4. Verificăm noua dimensiune în df -h și integritatea fișierului martor:\n[root@node2 ~]# df -Th /mnt/database\n[root@node2 ~]# cat /mnt/database/prod_record.txt\n```"
+      }
+    }
+  ]
+}

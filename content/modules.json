@@ -1,0 +1,99 @@
+[
+  {
+    "id": "pilon-2",
+    "order": 2,
+    "title": {
+      "ro": "Pilonul 2"
+    },
+    "chapters": [
+      {
+        "id": "2-2-gestiunea-pachetelor-software-rpm-dnf",
+        "number": "2.2",
+        "exam": [
+          "EX200"
+        ],
+        "topics": [],
+        "title": {
+          "ro": "Gestiunea Pachetelor Software (rpm, dnf, Repo-uri Locale/Remote, AppStreams & Flatpak)"
+        },
+        "examNote": {
+          "ro": "Ponderea în EX200: CRITICĂ — „GATEKEEPER TASK” (10% punctaj direct + 50% impact de blocaj asupra restului examenului!)."
+        }
+      },
+      {
+        "id": "2-3-automatizare-prin-bash-scripting-tuning",
+        "number": "2.3",
+        "exam": [
+          "EX200"
+        ],
+        "topics": [],
+        "title": {
+          "ro": "Automatizare prin Bash Scripting și Tuning de Performanță (tuned)"
+        },
+        "examNote": {
+          "ro": "Ponderea în EX200: 10–15% GARANTAT (2 Task-uri Directe în Examen!)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "pilon-3",
+    "order": 3,
+    "title": {
+      "ro": "Pilonul 3"
+    },
+    "chapters": [
+      {
+        "id": "3-2-lvm-pe-le-lvextend-stratis",
+        "number": "3.2",
+        "exam": [
+          "EX200"
+        ],
+        "topics": [],
+        "title": {
+          "ro": "Logical Volume Manager (LVM) și Stocare Avansată (Stratis / VDO)"
+        },
+        "examNote": {
+          "ro": "Ponderea în EX200: REGINA ABSOLUTĂ A EXAMENULUI (20% din punctajul total EX200!)."
+        }
+      },
+      {
+        "id": "3-3-nfs-autofs-direct-indirect-maps",
+        "number": "3.3",
+        "exam": [
+          "EX200"
+        ],
+        "topics": [],
+        "title": {
+          "ro": "Stocare în Rețea (NFS) și Montarea Dinamică la Cerere cu autofs (Subiect Clasic de Examen!)"
+        },
+        "examNote": {
+          "ro": "Ponderea în EX200: GARANTATĂ 100% (10–15% din punctajul examenului EX200!)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "pilon-4",
+    "order": 4,
+    "title": {
+      "ro": "Pilonul 4"
+    },
+    "chapters": [
+      {
+        "id": "4-1-networkmanager-nmcli-dns-chrony-ssh",
+        "number": "4.1",
+        "exam": [
+          "EX200"
+        ],
+        "topics": [],
+        "title": {
+          "ro": "Rețelistică în RHEL (NetworkManager / nmcli), DNS, Hostname și Sincronizarea Timpului (chrony)"
+        },
+        "examNote": {
+          "ro": "Ponderea în EX200: CRITICĂ — „FUNDAMENTUL CONECTIVITĂȚII” (10–15% punctaj direct + 100% impact asupra accesului SSH și DNF!)."
+        }
+      }
+    ]
+  }
+]
