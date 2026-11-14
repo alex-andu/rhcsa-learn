@@ -2,6 +2,12 @@
 
 Decizii luate fără a întreba (reversibile). Cea mai nouă sus.
 
+## 2026-11-14 — Cuprins generat și diagrama din 4.1
+
+10. **`surse-alex/cuprins.md` a fost generat de Claude, la cererea lui Alex.** Sursa: obiectivele publice EX200 (pagina oficială Red Hat nu a fost accesibilă din sesiune; au fost folosite ghiduri secundare) și cele 5 capitole existente, cu trimiterile lor la 3.1 (partiții) și 4.2 (SELinux/firewalld). 5 piloni, 17 capitole, 12 dintre ele „planificat”. Subiectele capitolelor existente sunt titlurile secțiunilor lor. Containerele (Podman) nu au capitol: sursele nu sunt de acord dacă mai fac parte din EX200 pe RHEL 10; de verificat pe pagina oficială.
+11. **Diagrama din 4.1 a fost corectată la cererea lui Alex**, în `surse-alex/capitolul_4_1_*.md`: eticheta săgeții `NM <--> Keyfiles` e acum între ghilimele (parantezele fără ghilimele opreau Mermaid). Restul textului e neschimbat.
+12. **Nota „Ponderea în EX200” rămâne pe capitole și cu `cuprins.md`**: importul o citește din fișierul fiecărui capitol în ambele moduri.
+
 ## 2026-11-13 — Pornirea platformei RHCSA
 
 1. **Același schelet ca VMware Study LMS** (Vite + React + TypeScript + Tailwind, LocalStorage, fără backend). Codul a fost copiat din `alex-andu/vmware-learning-ro`; conținutul VMware (lecții, glosar, surse) nu a fost preluat.

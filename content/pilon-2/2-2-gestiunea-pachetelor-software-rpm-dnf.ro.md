@@ -3,7 +3,7 @@ title: "2.2 Gestiunea Pachetelor Software (rpm, dnf, Repo-uri Locale/Remote, App
 summary: "Stăpânirea arhitecturii interne a sistemului de pachete RPM (Red Hat Package Manager) și a rezolvatorului modern de dependențe DNF (Dandified YUM), interogarea avansată a bazei de date /var/lib/rpm (rpm -qa, -qf, -ql, -qc, -qp --scripts, -Va), configurarea…"
 order: 2
 origin: alex
-updated: "2026-11-13"
+updated: "2026-11-14"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței

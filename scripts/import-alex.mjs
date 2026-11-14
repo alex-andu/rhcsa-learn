@@ -88,6 +88,15 @@ if (existsSync(join(SRC, 'cuprins.md'))) {
   console.log(`modules.json: ${modules.length} piloni, ${modules.reduce((n, m) => n + m.chapters.length, 0)} capitole`);
 }
 const hasCuprins = existsSync(join(SRC, 'cuprins.md'));
+// "Ponderea în EX200" from each chapter file goes on its chapter, with or without cuprins.md.
+for (const file of readdirSync(SRC).sort()) {
+  const fm = /^capitolul_(\d+)_(\d+)_.*\.md$/.exec(file);
+  if (!fm) continue;
+  const weight = /\*\*Ponderea în Examenul [^:]*:\*\*\s*\*\*(.+?)\*\*/.exec(read(join(SRC, file)))?.[1];
+  const chap = modules.flatMap((m) => m.chapters).find((c) => c.number === `${fm[1]}.${fm[2]}`);
+  if (chap && weight) chap.examNote = { ro: `Ponderea în EX200: ${plain(weight)}` };
+}
+if (hasCuprins) writeFileSync(modulesPath, JSON.stringify(modules, null, 2) + '\n');
 if (!hasCuprins) {
   for (const file of readdirSync(SRC).sort()) {
     const fm = /^capitolul_(\d+)_(\d+)_(.*)\.md$/.exec(file);

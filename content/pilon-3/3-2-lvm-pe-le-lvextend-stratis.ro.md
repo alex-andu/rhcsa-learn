@@ -3,7 +3,7 @@ title: "3.2 Logical Volume Manager (LVM) și Stocare Avansată (Stratis / VDO)"
 summary: "Stăpânirea arhitecturii LVM2 (Logical Volume Manager v2) bazată pe subsistemul de kernel Device Mapper (dm-mod) pe cele 3 niveluri fundamentale: Physical Volumes (PV), Volume Groups (VG) și Logical Volumes (LV). Înțelegerea matematică și practică a unităților…"
 order: 2
 origin: alex
-updated: "2026-11-13"
+updated: "2026-11-14"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței

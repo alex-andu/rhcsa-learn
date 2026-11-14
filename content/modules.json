@@ -1,21 +1,132 @@
 [
   {
-    "id": "pilon-2",
-    "order": 2,
+    "id": "pilon-1",
+    "order": 1,
     "title": {
-      "ro": "Pilonul 2"
+      "ro": "Pilonul 1: Fundamentele Linux și Uneltele Esențiale"
     },
     "chapters": [
       {
-        "id": "2-2-gestiunea-pachetelor-software-rpm-dnf",
-        "number": "2.2",
+        "id": "1-1-shell-ul-bash-sistemul-de-fisiere",
+        "number": "1.1",
+        "title": {
+          "ro": "Shell-ul Bash, Sistemul de Fișiere și Documentația din Sistem"
+        },
         "exam": [
           "EX200"
         ],
-        "topics": [],
+        "topics": [
+          "1.1.1 Accesul la shell (consolă, terminal, SSH) și sintaxa corectă a comenzilor.",
+          "1.1.2 Ierarhia sistemului de fișiere (FHS): /etc, /var, /usr, /home, căi absolute și relative.",
+          "1.1.3 Documentația locală: man (secțiuni, căutare cu man -k), info și /usr/share/doc."
+        ]
+      },
+      {
+        "id": "1-2-gestiunea-fisierelor-legaturi-arhive-si-transfer",
+        "number": "1.2",
+        "title": {
+          "ro": "Gestiunea Fișierelor, Legături, Arhive și Transfer Securizat"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "1.2.1 Crearea, copierea, mutarea și ștergerea fișierelor și directoarelor.",
+          "1.2.2 Legături hard și simbolice (ln, ln -s) și diferența la nivel de inode.",
+          "1.2.3 Arhive și compresie: tar cu gzip, bzip2 și xz.",
+          "1.2.4 Transferul securizat de fișiere între sisteme (scp, sftp, rsync)."
+        ]
+      },
+      {
+        "id": "1-3-redirectionari-pipe-uri-grep-si-expresii",
+        "number": "1.3",
+        "title": {
+          "ro": "Redirecționări, Pipe-uri, grep și Expresii Regulate"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "1.3.1 Fluxurile stdin, stdout, stderr și redirecționarea lor (>, >>, 2>, &>).",
+          "1.3.2 Pipe-uri și filtrarea textului (grep, sort, cut, wc, tee).",
+          "1.3.3 Expresii regulate de bază și extinse în grep -E."
+        ]
+      },
+      {
+        "id": "1-4-utilizatori-grupuri-si-accesul-sudo",
+        "number": "1.4",
+        "title": {
+          "ro": "Utilizatori, Grupuri și Accesul sudo"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "1.4.1 Crearea, modificarea și ștergerea utilizatorilor locali (useradd, usermod, userdel).",
+          "1.4.2 Parole și îmbătrânirea lor (passwd, chage, /etc/login.defs).",
+          "1.4.3 Grupuri locale și grupuri secundare (groupadd, usermod -aG).",
+          "1.4.4 Acces de superuser cu sudo (/etc/sudoers.d/, visudo, grupul wheel)."
+        ]
+      },
+      {
+        "id": "1-5-permisiuni-umask-si-biti-speciali",
+        "number": "1.5",
+        "title": {
+          "ro": "Permisiuni, umask și Biți Speciali"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "1.5.1 Permisiunile standard rwx în mod simbolic și octal (chmod, chown, chgrp).",
+          "1.5.2 Permisiunile implicite cu umask.",
+          "1.5.3 Biții speciali SUID, SGID și sticky bit; directoare colaborative.",
+          "1.5.4 Diagnosticarea problemelor de permisiuni."
+        ]
+      }
+    ],
+    "target": {
+      "ro": "Lucrul sigur în linia de comandă: shell, fișiere, documentație, utilizatori și permisiuni."
+    }
+  },
+  {
+    "id": "pilon-2",
+    "order": 2,
+    "title": {
+      "ro": "Pilonul 2: Operarea și Administrarea Sistemului"
+    },
+    "chapters": [
+      {
+        "id": "2-1-procesul-de-boot-targeturi-systemd-grub2",
+        "number": "2.1",
+        "title": {
+          "ro": "Procesul de Boot, Targeturi systemd, GRUB2 și Resetarea Parolei root"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "2.1.1 Pornirea, repornirea și oprirea corectă a sistemului.",
+          "2.1.2 Targeturile systemd: pornirea manuală într-un target și setarea targetului implicit.",
+          "2.1.3 Întreruperea boot-ului pentru acces la sistem (resetarea parolei root, rd.break).",
+          "2.1.4 Modificarea bootloader-ului GRUB2 (grubby, /etc/default/grub)."
+        ]
+      },
+      {
+        "id": "2-2-gestiunea-pachetelor-software-rpm-dnf",
+        "number": "2.2",
         "title": {
           "ro": "Gestiunea Pachetelor Software (rpm, dnf, Repo-uri Locale/Remote, AppStreams & Flatpak)"
         },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "2.2.1 Anatomia unui pachet .rpm și comanda de nivel jos rpm.",
+          "2.2.2 Configurarea depozitelor dnf în /etc/yum.repos.d/*.repo.",
+          "2.2.3 Comanda dnf: pachete, grupuri, istoric și module.",
+          "2.2.4 Aplicații izolate cu Flatpak."
+        ],
         "examNote": {
           "ro": "Ponderea în EX200: CRITICĂ — „GATEKEEPER TASK” (10% punctaj direct + 50% impact de blocaj asupra restului examenului!)."
         }
@@ -23,36 +134,95 @@
       {
         "id": "2-3-automatizare-prin-bash-scripting-tuning",
         "number": "2.3",
-        "exam": [
-          "EX200"
-        ],
-        "topics": [],
         "title": {
           "ro": "Automatizare prin Bash Scripting și Tuning de Performanță (tuned)"
         },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "2.3.1 Anatomia unui script Bash: shebang, permisiuni și variabilele speciale.",
+          "2.3.2 Operatorii de testare [[ ... ]] și structurile condiționale (if, case).",
+          "2.3.3 Bucle for și while și procesarea listelor.",
+          "2.3.4 Optimizarea performanței cu tuned și tuned-adm."
+        ],
         "examNote": {
           "ro": "Ponderea în EX200: 10–15% GARANTAT (2 Task-uri Directe în Examen!)."
         }
+      },
+      {
+        "id": "2-4-servicii-systemd-procese-si-prioritati",
+        "number": "2.4",
+        "title": {
+          "ro": "Servicii systemd, Procese și Priorități"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "2.4.1 Pornirea, oprirea și activarea serviciilor la boot (systemctl).",
+          "2.4.2 Identificarea proceselor care consumă CPU și memorie (ps, top) și oprirea lor (kill, pkill).",
+          "2.4.3 Ajustarea priorității proceselor (nice, renice)."
+        ]
+      },
+      {
+        "id": "2-5-programarea-sarcinilor-si-jurnalele-sistemului",
+        "number": "2.5",
+        "title": {
+          "ro": "Programarea Sarcinilor și Jurnalele Sistemului"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "2.5.1 Sarcini programate cu cron, at și timere systemd.",
+          "2.5.2 Localizarea și interpretarea jurnalelor (journalctl, /var/log).",
+          "2.5.3 Păstrarea persistentă a jurnalului systemd."
+        ]
       }
-    ]
+    ],
+    "target": {
+      "ro": "Pornirea, serviciile, procesele, software-ul, automatizarea și jurnalele unui server RHEL."
+    }
   },
   {
     "id": "pilon-3",
     "order": 3,
     "title": {
-      "ro": "Pilonul 3"
+      "ro": "Pilonul 3: Stocarea Locală și în Rețea"
     },
     "chapters": [
       {
-        "id": "3-2-lvm-pe-le-lvextend-stratis",
-        "number": "3.2",
+        "id": "3-1-partitionare-gpt-mbr-sisteme-de-fisiere",
+        "number": "3.1",
+        "title": {
+          "ro": "Partiționare GPT/MBR, Sisteme de Fișiere și Swap"
+        },
         "exam": [
           "EX200"
         ],
-        "topics": [],
+        "topics": [
+          "3.1.1 Partiții GPT și MBR (parted, fdisk, gdisk) adăugate fără a distruge datele.",
+          "3.1.2 Crearea sistemelor de fișiere xfs, ext4 și vfat.",
+          "3.1.3 Montarea persistentă după UUID sau etichetă în /etc/fstab.",
+          "3.1.4 Spațiu de swap pe partiție sau volum logic."
+        ]
+      },
+      {
+        "id": "3-2-lvm-pe-le-lvextend-stratis",
+        "number": "3.2",
         "title": {
           "ro": "Logical Volume Manager (LVM) și Stocare Avansată (Stratis / VDO)"
         },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "3.2.1 Arhitectura LVM2 pe cele 3 niveluri și matematica PE / LE.",
+          "3.2.2 Comenzile LVM pe cele 3 niveluri: creare, inspecție, ștergere.",
+          "3.2.3 Extinderea online a unui volum logic (lvextend -r).",
+          "3.2.4 Stocare modernă: Stratis și LVM-VDO."
+        ],
         "examNote": {
           "ro": "Ponderea în EX200: REGINA ABSOLUTĂ A EXAMENULUI (20% din punctajul total EX200!)."
         }
@@ -60,40 +230,113 @@
       {
         "id": "3-3-nfs-autofs-direct-indirect-maps",
         "number": "3.3",
+        "title": {
+          "ro": "Stocare în Rețea (NFS) și Montarea Dinamică la Cerere cu autofs"
+        },
         "exam": [
           "EX200"
         ],
-        "topics": [],
-        "title": {
-          "ro": "Stocare în Rețea (NFS) și Montarea Dinamică la Cerere cu autofs (Subiect Clasic de Examen!)"
-        },
+        "topics": [
+          "3.3.1 Arhitectura protocolului NFSv4 (server și client).",
+          "3.3.2 Descoperirea și montarea clasică pe client (showmount, mount, /etc/fstab).",
+          "3.3.3 Arhitectura autofs: Direct Maps, Indirect Maps și wildcards."
+        ],
         "examNote": {
           "ro": "Ponderea în EX200: GARANTATĂ 100% (10–15% din punctajul examenului EX200!)."
         }
       }
-    ]
+    ],
+    "target": {
+      "ro": "Partiții, sisteme de fișiere, LVM și stocare în rețea, toate persistente după reboot."
+    }
   },
   {
     "id": "pilon-4",
     "order": 4,
     "title": {
-      "ro": "Pilonul 4"
+      "ro": "Pilonul 4: Rețea și Securitate"
     },
     "chapters": [
       {
         "id": "4-1-networkmanager-nmcli-dns-chrony-ssh",
         "number": "4.1",
-        "exam": [
-          "EX200"
-        ],
-        "topics": [],
         "title": {
           "ro": "Rețelistică în RHEL (NetworkManager / nmcli), DNS, Hostname și Sincronizarea Timpului (chrony)"
         },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "4.1.1 Numele predictibile ale interfețelor de rețea.",
+          "4.1.2 Arhitectura NetworkManager și comanda nmcli.",
+          "4.1.3 Hostname, rezoluția numelor și diagnosticare (ip, ss).",
+          "4.1.4 Accesul la distanță cu OpenSSH și autentificarea prin chei.",
+          "4.1.5 Fusul orar (timedatectl) și sincronizarea timpului cu chrony."
+        ],
         "examNote": {
           "ro": "Ponderea în EX200: CRITICĂ — „FUNDAMENTUL CONECTIVITĂȚII” (10–15% punctaj direct + 100% impact asupra accesului SSH și DNF!)."
         }
+      },
+      {
+        "id": "4-2-firewall-si-selinux",
+        "number": "4.2",
+        "title": {
+          "ro": "Firewall (firewalld) și SELinux"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "4.2.1 Zone și servicii în firewalld (firewall-cmd --permanent).",
+          "4.2.2 Modurile SELinux: enforcing, permissive, disabled.",
+          "4.2.3 Contextele SELinux ale fișierelor și proceselor; restaurarea contextelor implicite (restorecon, semanage fcontext).",
+          "4.2.4 Etichetele de port (semanage port) și boolean-urile SELinux (setsebool -P)."
+        ]
       }
-    ]
+    ],
+    "target": {
+      "ro": "Conectivitate persistentă, acces la distanță sigur, firewall și SELinux."
+    }
+  },
+  {
+    "id": "pilon-5",
+    "order": 5,
+    "title": {
+      "ro": "Pilonul 5: Pregătirea Finală pentru Examen"
+    },
+    "chapters": [
+      {
+        "id": "5-1-strategia-de-examen-ex200",
+        "number": "5.1",
+        "title": {
+          "ro": "Strategia de Examen EX200"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "5.1.1 Ordinea task-urilor: acces la node2, rețea, depozite, apoi restul.",
+          "5.1.2 Regula persistenței: verificarea fiecărei configurații după reboot.",
+          "5.1.3 Documentația disponibilă în examen și gestionarea timpului."
+        ]
+      },
+      {
+        "id": "5-2-simulare-completa-ex200",
+        "number": "5.2",
+        "title": {
+          "ro": "Simulare Completă EX200"
+        },
+        "exam": [
+          "EX200"
+        ],
+        "topics": [
+          "5.2.1 Examen simulat pe node1 și node2, cu limita de timp a examenului real.",
+          "5.2.2 Scripturi de verificare pentru toate task-urile și analiza greșelilor."
+        ]
+      }
+    ],
+    "target": {
+      "ro": "Strategia de examen și simularea completă a unui EX200 pe node1 și node2."
+    }
   }
 ]

@@ -136,14 +136,15 @@ try {
   await page.getByRole('heading', { name: 'Curriculum' }).first().waitFor();
   const nMods = await page.locator('section[data-module]').count();
   const nChaps = await page.locator('li[data-chapter]').count();
-  check(nMods === 3 && nChaps === 5, `curriculum lists all pillars and chapters (${nMods} modules, ${nChaps} chapters)`);
+  check(nMods === 5 && nChaps === 17, `curriculum lists all pillars and chapters from cuprins.md (${nMods} modules, ${nChaps} chapters)`);
+  check((await page.getByText('(planificat)').count()) === 12, 'the 12 chapters without a lesson show as planned');
   check((await page.locator(`li[data-chapter="${KEY}"] a`).count()) === 1, 'available lesson is linked from curriculum');
   await page.screenshot({ path: 'screenshots/06-curriculum.png', fullPage: true });
 
-  // Chapter 4.1: Alex's diagram #1 has a syntax error (docs/PENTRU-ALEX.md); the app must show the raw code, not crash
+  // Chapter 4.1: the NetworkManager diagram (edge label fixed on 2026-11-14) renders
   await page.goto(BASE + '/lesson/pilon-4/4-1-networkmanager-nmcli-dns-chrony-ssh');
   await page.waitForFunction(() => !document.querySelector('[data-mermaid="loading"]'));
-  check((await page.locator('[data-mermaid="error"]').count()) === 1, 'invalid diagram in 4.1 falls back to raw code with a message');
+  check((await page.locator('[data-mermaid="ok"]').count()) === 1 && (await page.locator('[data-mermaid="error"]').count()) === 0, 'diagram in 4.1 renders as SVG');
 
   // Export / import
   await page.goto(BASE + '/settings');

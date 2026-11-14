@@ -3,7 +3,7 @@ title: "3.3 Stocare în Rețea (NFS) și Montarea Dinamică la Cerere cu autofs 
 summary: "Înțelegerea completă a arhitecturii NFSv4 (Network File System v4), configurarea unui server NFS (/etc/exports, exportfs -rav, opțiunile rw, sync, root_squash vs. no_root_squash), montarea statică în /etc/fstab cu opțiunea vitală _netdev, și stăpânirea…"
 order: 3
 origin: alex
-updated: "2026-11-13"
+updated: "2026-11-14"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței

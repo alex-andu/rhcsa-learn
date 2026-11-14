@@ -3,7 +3,7 @@ title: "4.1 Rețelistică în RHEL (NetworkManager / nmcli), DNS, Hostname și S
 summary: "Stăpânirea arhitecturii moderne de rețea din Red Hat Enterprise Linux (RHEL 9 / RHEL 10) bazată pe daemonul NetworkManager și noile fișiere de profil în format keyfile din /etc/NetworkManager/system-connections/*.nmconnection; înțelegerea diferenței…"
 order: 1
 origin: alex
-updated: "2026-11-13"
+updated: "2026-11-14"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței
@@ -57,7 +57,7 @@ Daemonul **`NetworkManager.service`** gestionează toată configurația de rețe
 flowchart LR
     CLI["⌨️ Unelte User Space:\n1. nmcli (Command Line - Regele EX200!)\n2. nmtui (Interfață Text Curses)\n3. nm-connection-editor"] -->|D-Bus API| NM["⚙️ Daemonul NetworkManager\n(Activ și Enabled la Boot)"]
     
-    NM <-->|Citește & Scrie Persistent\n(Permisiuni 0600)| Keyfiles["📄 /etc/NetworkManager/system-connections/\n└── enp1s0.nmconnection\n([connection], [ipv4], [ipv6])"]
+    NM <-->|"Citește & Scrie Persistent\n(Permisiuni 0600)"| Keyfiles["📄 /etc/NetworkManager/system-connections/\n└── enp1s0.nmconnection\n([connection], [ipv4], [ipv6])"]
     
     NM -->|Generează Dinamic| Resolv["📄 /etc/resolv.conf\n(nameserver 192.168.122.10)"]
     NM -->|Configurează prin Netlink Socket| Kernel["🚀 Linux Kernel TCP/IP Stack\n(Interfața fizică 'Device': enp1s0)"]
