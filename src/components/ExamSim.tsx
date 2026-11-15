@@ -71,7 +71,7 @@ export function ExamTimer({ minutes }: { minutes: number }) {
         </span>
       </div>
       <div className="mt-2 h-1.5 overflow-hidden rounded bg-[var(--track)]">
-        <div className="h-full bg-[var(--accent)] transition-[width]" style={{ width: `${pct}%` }} />
+        <div className="h-full bg-[var(--accent-strong)] transition-[width]" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );

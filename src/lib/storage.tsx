@@ -29,7 +29,7 @@ export const defaultState: AppState = {
   quiz: {},
   notes: {},
   lang: 'ro',
-  theme: 'dark',
+  theme: 'light',
 };
 
 /** Accepts any parsed object and returns a valid AppState, or null if it is not ours. */
@@ -45,7 +45,7 @@ export function sanitizeState(input: unknown): AppState | null {
     quiz: obj(o.quiz) as AppState['quiz'],
     notes: obj(o.notes) as AppState['notes'],
     lang: o.lang === 'en' ? 'en' : 'ro',
-    theme: o.theme === 'light' ? 'light' : 'dark',
+    theme: o.theme === 'dark' ? 'dark' : 'light',
     lastLesson: typeof o.lastLesson === 'string' ? o.lastLesson : undefined,
   };
 }

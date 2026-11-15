@@ -2,6 +2,13 @@
 
 Decizii luate fără a întreba (reversibile). Cea mai nouă sus.
 
+## 2026-11-15 — Aprofundări și temă nouă (cerute de Alex)
+
+19. **Aprofundări scrise de Claude, la cererea explicită a lui Alex** („extinde documentația cu încă 50% pe fiecare topic”). Este o excepție de la regula „Claude nu scrie lecții”. Textul lui Alex rămâne neatins: extinderile stau separat, în `surse-alex/extinderi/capitolul_X_Y.md`, iar importul le adaugă la sfârșitul secțiunilor Arhitectură, Capcane și Interviu, sub un marcaj vizibil „➕ Aprofundare”. Ștergerea unui fișier din `extinderi/` și un reimport scot extinderea acelui capitol.
+20. **Mărimea extinderilor:** între 47% și 64% din partea de teorie a fiecărui capitol (secțiunile 1–4, în caractere), adică 21–39% din capitolul întreg cu laborator, simulare și script. Subsecțiunile noi continuă numerotarea lui Alex (2.6, 2.7…) și apar ca subiecte în cuprins.
+21. **Sursa conținutului:** cunoștințele lui Claude despre RHEL 9/10; site-ul Red Hat nu a fost accesibil din sesiune, deci extinderile nu au fost verificate pe documentația oficială și nici rulate pe un sistem RHEL. De verificat de Alex în laborator.
+22. **Temă mai primitoare:** paletă caldă (crem + teracotă), tema luminoasă devine implicită (cea întunecată rămâne, în tonuri calde), colțuri rotunjite, umbre fine, text de lecție puțin mai mare. Panoul are un mesaj de bun venit, trei cifre de progres și descrierea fiecărui pilon. Cine avea deja o temă salvată în browser o păstrează.
+
 ## 2026-11-15 — Toate cele 16 capitole ale lui Alex
 
 13. **Cuprinsul e generat de `scripts/generate-cuprins.mjs`** din fișierele capitolelor (titlu din `# Capitolul X.Y:`, subiecte din titlurile `### 2.N.`). Doar titlurile și obiectivele celor 7 piloni (0–6) sunt scrise de Claude. Înlocuiește cuprinsul de la punctul 10, care urma alte numere decât capitolele lui Alex.

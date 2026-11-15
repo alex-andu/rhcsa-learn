@@ -260,6 +260,9 @@ const SECTION_OF = [
   [/BIBLIOGRAFIE/i, 'references'],
 ];
 
+const EXT_MARKER =
+  '> **➕ Aprofundare.** De aici până la sfârșitul secțiunii, textul este o extindere adăugată de Claude la cererea lui Alex (nu face parte din capitolul original).';
+
 let imported = 0;
 for (const file of readdirSync(SRC).sort()) {
   const fm = /^capitolul_(\d+)_(\d+)_.*\.md$/.exec(file);
@@ -315,6 +318,20 @@ for (const file of readdirSync(SRC).sort()) {
     sections[type] = list.length === 1 ? list[0].body : list.map((p) => `### ${p.title}\n\n${p.body}`).join('\n\n');
   }
 
+  // Extensions written by Claude at Alex's request live in <folder>/extinderi/capitolul_X_Y.md.
+  // Each "## <section>" block is appended to that section, under a visible marker, so Alex's own text stays as he wrote it.
+  const extPath = join(SRC, 'extinderi', `capitolul_${fm[1]}_${fm[2]}.md`);
+  let extended = 0;
+  if (existsSync(extPath)) {
+    for (const b of splitAt(tagMermaid(read(extPath)), /^##\s+([a-z-]+)\s*$/).filter((x) => x.head)) {
+      const type = b.head[1];
+      if (!(type in sections)) throw new Error(`${extPath}: section "${type}" does not exist in ${file}`);
+      const body = trimRules(b.body);
+      sections[type] += `\n\n---\n\n${EXT_MARKER}\n\n${body}`;
+      extended += body.length;
+    }
+  }
+
   const order = ['analogy', 'architecture', 'exam-alert', 'trenches', 'interview', 'lab', 'exam', 'solution', 'quiz', 'references'];
   const bodyOut = order
     .filter((t) => t in sections)
@@ -340,6 +357,6 @@ for (const file of readdirSync(SRC).sort()) {
   if (exam?.data) writeFileSync(`${base}.exam.json`, JSON.stringify(exam.data, null, 2) + '\n');
   if (lab?.steps.length) writeFileSync(`${base}.lab.json`, JSON.stringify({ steps: lab.steps }, null, 2) + '\n');
   imported++;
-  console.log(`${file} -> ${target.mod.id}/${target.chap.id} (${Object.keys(sections).join(', ')}; quiz ${quiz?.questions.length ?? 0}, recall ${exam?.data?.questions.length ?? 0}, timer ${exam?.data?.timerMinutes ?? '-'} min, lab ${lab?.steps.length ?? 0})`);
+  console.log(`${file} -> ${target.mod.id}/${target.chap.id} (${Object.keys(sections).join(', ')}; quiz ${quiz?.questions.length ?? 0}, recall ${exam?.data?.questions.length ?? 0}, timer ${exam?.data?.timerMinutes ?? '-'} min, lab ${lab?.steps.length ?? 0}${extended ? `, aprofundare +${Math.round((100 * extended) / raw.length)}%` : ''})`);
 }
 console.log(`imported ${imported} chapter(s)`);

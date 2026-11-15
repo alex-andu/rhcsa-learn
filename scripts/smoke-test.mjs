@@ -36,9 +36,10 @@ try {
 
   // Dashboard
   await page.goto(BASE);
-  await page.getByRole('heading', { name: 'Panou' }).waitFor();
-  check(await page.locator('html.dark').count() === 1, 'dark theme is the default');
-  await page.screenshot({ path: 'screenshots/01-dashboard-dark.png' });
+  await page.getByTestId('welcome').waitFor();
+  check(await page.locator('html.dark').count() === 0, 'warm light theme is the default');
+  check(await page.getByText('Bine ai venit!').isVisible(), 'dashboard greets a first-time visitor');
+  await page.screenshot({ path: 'screenshots/01-dashboard-light.png', fullPage: true });
 
   // Lesson: sections, Mermaid, glossary links
   await page.goto(BASE + LESSON);
@@ -55,7 +56,7 @@ try {
   check((await page.locator('[data-mermaid="error"]').count()) === 0, 'no Mermaid fallback errors');
   check((await page.locator('section[data-section="exam"] h3', { hasText: 'Partea A' }).count()) === 1, 'exam tasks (Partea A) shown');
   check(!(await page.locator('details[data-section="solution"]').evaluate((d) => d.open)), 'solution is folded by default');
-  await page.screenshot({ path: 'screenshots/02-lesson-dark.png', fullPage: true });
+  await page.screenshot({ path: 'screenshots/02-lesson-light.png', fullPage: true });
 
   // Lab checklist persists
   await page.locator('section[data-section="lab"] input[type=checkbox]').first().check();
@@ -101,20 +102,20 @@ try {
   check((await page.locator('.katex-error').count()) === 0, 'no KaTeX errors');
 
   // Theme toggle re-renders Mermaid
-  const svgDark = await page.locator('[data-mermaid="ok"]').first().innerHTML();
+  const svgLight = await page.locator('[data-mermaid="ok"]').first().innerHTML();
   await page.getByRole('button', { name: 'Tema' }).click();
   await page.waitForFunction((prev) => {
     const el = document.querySelector('[data-mermaid="ok"]');
     return el && el.innerHTML !== prev;
-  }, svgDark);
-  check(await page.locator('html.dark').count() === 0, 'light theme toggled');
-  check((await page.locator('[data-mermaid="error"]').count()) === 0, 'Mermaid re-rendered for light theme without errors');
-  await page.screenshot({ path: 'screenshots/03-lesson-light.png', fullPage: true });
+  }, svgLight);
+  check(await page.locator('html.dark').count() === 1, 'dark theme toggled');
+  check((await page.locator('[data-mermaid="error"]').count()) === 0, 'Mermaid re-rendered for dark theme without errors');
+  await page.screenshot({ path: 'screenshots/03-lesson-dark.png', fullPage: true });
 
   // Language toggle: Alex's lessons are RO-only, so EN shows the RO text with a banner
   await page.getByRole('button', { name: 'Limba' }).click();
   check(await page.getByText('The English version of this lesson is not available yet').isVisible(), 'EN toggle shows the RO lesson with the fallback banner');
-  await page.getByRole('button', { name: 'Theme' }).click(); // back to dark
+  await page.getByRole('button', { name: 'Theme' }).click(); // back to light
   await page.getByRole('button', { name: 'Language' }).click(); // back to RO
 
   // Fallback banner for a lesson without EN

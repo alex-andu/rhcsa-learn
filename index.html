@@ -1,9 +1,15 @@
 <!doctype html>
-<html lang="ro" class="dark">
+<html lang="ro">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RHCSA Study LMS</title>
+    <script>
+      // Apply the saved theme before the first paint, so a dark-theme user never sees a light flash.
+      try {
+        if (JSON.parse(localStorage.getItem('rhcsa-lms:v1') || '{}').theme === 'dark') document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

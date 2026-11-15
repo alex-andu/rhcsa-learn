@@ -2,33 +2,41 @@
 @plugin '@tailwindcss/typography';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Light theme tokens */
+/* Warm, welcoming palette. Light ("cream") is the default; dark is a warm charcoal, not a cold grey.
+   --accent is for links and highlights, --accent-strong for filled buttons (white text stays readable on it). */
 :root {
-  --bg: #f4f5f7;
-  --fg: #1d2329;
-  --panel: #ffffff;
-  --sidebar: #ffffff;
-  --header: #151515;
-  --border: #d0d5db;
-  --hover: #e8ecf1;
-  --muted: #56606b;
-  --accent: #c9190b;
-  --track: #d9dee4;
+  --bg: #faf5ee;
+  --fg: #2d2621;
+  --panel: #fffdf9;
+  --sidebar: #fdf9f3;
+  --header: #7c2d1e;
+  --header-2: #b4472b;
+  --border: #e6dccd;
+  --hover: #f3eadc;
+  --muted: #6b5f55;
+  --accent: #b83a1e;
+  --accent-strong: #b83a1e;
+  --accent-soft: #fbe9df;
+  --track: #eadfce;
+  --shadow: 0 1px 2px rgb(88 60 30 / 0.06), 0 4px 14px rgb(88 60 30 / 0.06);
   color-scheme: light;
 }
 
-/* Dark theme (default): terminal-like dark grey, red accent */
 .dark {
-  --bg: #1b1f23;
-  --fg: #e3e6e9;
-  --panel: #252a30;
-  --sidebar: #21262b;
-  --header: #12161a;
-  --border: #39414a;
-  --hover: #2e353d;
-  --muted: #a3acb6;
-  --accent: #e5484d;
-  --track: #39414a;
+  --bg: #201c1a;
+  --fg: #efe7de;
+  --panel: #2a2522;
+  --sidebar: #25211e;
+  --header: #3a211b;
+  --header-2: #5c2c20;
+  --border: #433a34;
+  --hover: #352e2a;
+  --muted: #b9aca0;
+  --accent: #f29a7b;
+  --accent-strong: #c2492c;
+  --accent-soft: #3b2a24;
+  --track: #433a34;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 18px rgb(0 0 0 / 0.2);
   color-scheme: dark;
 }
 
@@ -36,24 +44,46 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
 }
 
 @layer components {
   .card {
-    @apply rounded-md border border-[var(--border)] bg-[var(--panel)] p-4;
+    @apply rounded-2xl border border-[var(--border)] bg-[var(--panel)] p-5;
+    box-shadow: var(--shadow);
+  }
+  .card-link {
+    @apply transition hover:-translate-y-0.5 hover:border-[var(--accent)];
   }
   .btn {
-    @apply rounded-md border border-[var(--accent)] bg-[var(--accent)] px-3 py-1.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50;
+    @apply rounded-full border border-[var(--accent-strong)] bg-[var(--accent-strong)] px-4 py-2 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50;
   }
   .btn-done {
     @apply border-emerald-600 bg-emerald-600;
   }
   .tag {
-    @apply rounded border border-[var(--border)] px-2 py-0.5;
+    @apply rounded-full border border-[var(--border)] bg-[var(--panel)] px-2.5 py-0.5;
   }
   .glossary-link {
     @apply underline decoration-dotted underline-offset-2;
   }
+  .hero {
+    @apply rounded-3xl p-6 text-white sm:p-8;
+    background: linear-gradient(135deg, var(--header), var(--header-2));
+    box-shadow: var(--shadow);
+  }
+}
+
+/* Lesson text: a little larger and airier, easier on a beginner's eyes. */
+.prose {
+  font-size: 1.03rem;
+  line-height: 1.75;
+}
+.prose :where(pre) {
+  border-radius: 0.9rem;
+}
+.prose :where(table) {
+  font-size: 0.92em;
 }
 
 :focus-visible {

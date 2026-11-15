@@ -5,7 +5,7 @@
 //   node scripts/generate-cuprins.mjs surse-alex
 //
 // If Alex writes his own cuprins.md, stop running this script: the importer reads cuprins.md as is.
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const SRC = process.argv[2] ?? 'surse-alex';
@@ -24,7 +24,10 @@ const chapters = readdirSync(SRC)
   .map((f) => [f, /^capitolul_(\d+)_(\d+)_.*\.md$/.exec(f)])
   .filter(([, m]) => m)
   .map(([f, m]) => {
-    const text = readFileSync(join(SRC, f), 'utf8').replace(/\r\n/g, '\n');
+    const ext = join(SRC, 'extinderi', `capitolul_${m[1]}_${m[2]}.md`);
+    // Topics also include the "### 2.N." headings of the extension file, if there is one.
+    const text =
+      readFileSync(join(SRC, f), 'utf8').replace(/\r\n/g, '\n') + (existsSync(ext) ? '\n' + readFileSync(ext, 'utf8') : '');
     const title = plain(/^#{1,2}\s+Capitolul\s+\d+\.\d+:\s*(.+)$/m.exec(text)?.[1] ?? f);
     let fence = false;
     const topics = [];

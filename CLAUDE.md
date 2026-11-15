@@ -27,6 +27,7 @@ Teoria cursului o scrie Alex. Claude se ocupă **doar de integrarea ei în platf
   - fără `cuprins.md`: adaugă în `modules.json` pilonul și capitolul fiecărui fișier („Pilonul N”, titlul din `# Capitolul X.Y:`, nota „Ponderea în EX200”);
   - pune fiecare `capitolul_X_Y_*.md` în `content/pilon-X/<capitol>.ro.md`, cu secțiunile `:::` ale platformei, plus `.lab.json` (din „Pasul N”) și `.exam.json` (din „Simulare de Examen”: minutele cronometrului, Partea B + Răspunsurile);
   - marchează lecția cu `origin: alex` și etichetează ca `mermaid` blocurile de diagramă scrise fără limbaj.
+- Aprofundări: `surse-alex/extinderi/capitolul_X_Y.md` conțin extinderi scrise de Claude **la cererea lui Alex** (blocuri `## architecture`, `## exam-alert`, `## interview`). Importul le adaugă la sfârșitul secțiunii respective, sub marcajul „➕ Aprofundare”. Nu se amestecă în fișierele lui Alex și nu se scriu altele fără ca Alex să ceară.
 - Textul lui Alex rămâne neschimbat. Greșelile de formatare (o formulă `$…$` neînchisă, o diagramă Mermaid invalidă) i le semnalăm lui Alex în `docs/PENTRU-ALEX.md`, nu le corectăm în tăcere.
 - Formulele `$…$` se afișează cu KaTeX. O diagramă Mermaid invalidă într-un capitol al lui Alex e avertisment la `validate` și apare în aplicație ca cod brut cu mesaj; în orice altă lecție oprește build-ul.
 - Capitolele din cuprins fără fișier apar „planificat” pe `/curriculum`, cu subiectele lor.

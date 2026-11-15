@@ -10,5 +10,7 @@ Textul tău intră neschimbat în platformă. Aici apar problemele de formatare 
 
 ## De verificat de tine
 
+- **Aprofundările** (textul de sub marcajul „➕ Aprofundare” din fiecare capitol) sunt scrise de Claude, la cererea ta, din cunoștințe generale despre RHEL 9/10. Nu au fost rulate pe un sistem RHEL și nu au fost comparate cu documentația Red Hat (site-ul nu era accesibil). Încearcă-le în laborator și spune ce nu se potrivește; se corectează în `surse-alex/extinderi/`.
+
 - **Laboratorul din 0.1** are pașii ca „#### Pasul N” în subsecțiunea 5.4, nu „### Pasul N”. Se afișează ca text, dar fără bifele pe pași pe care le au celelalte capitole.
 - **Mesajul final din 6.1** spune „toate cele 12 capitole complete”, dar cursul are 16 capitole (0.1–6.1).

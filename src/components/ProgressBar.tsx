@@ -9,7 +9,7 @@ export function ProgressBar({ value, max, small }: { value: number; max: number;
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <span className="block h-full rounded-full bg-[var(--accent)]" style={{ width: `${pct}%` }} />
+        <span className="block h-full rounded-full bg-[var(--accent-strong)]" style={{ width: `${pct}%` }} />
       </span>
       <span className={`tabular-nums text-[var(--muted)] ${small ? 'text-[10px]' : 'text-xs'}`}>
         {value}/{max}

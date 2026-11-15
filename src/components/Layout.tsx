@@ -19,19 +19,19 @@ export function Layout() {
   };
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-2 rounded px-3 py-2 text-sm ${isActive ? 'bg-[var(--accent)]/15 text-[var(--accent)] font-medium' : 'hover:bg-[var(--hover)]'}`;
+    `flex items-center gap-2 rounded-xl px-3 py-2 text-sm ${isActive ? 'bg-[var(--accent-soft)] text-[var(--accent)] font-medium' : 'hover:bg-[var(--hover)]'}`;
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)]">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-[var(--accent)] focus:px-3 focus:py-1 focus:text-white">
         Skip to content
       </a>
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-[var(--border)] bg-[var(--header)] px-3 text-white sm:px-4">
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-2 px-3 text-white shadow-sm sm:px-4" style={{ background: 'linear-gradient(90deg, var(--header), var(--header-2))' }}>
         <button className="rounded p-2 hover:bg-white/10 lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
         <Link to="/" className="flex items-center gap-2 font-semibold whitespace-nowrap">
-          <Terminal size={20} aria-hidden="true" />
+          <span className="grid h-8 w-8 place-items-center rounded-xl bg-white/15"><Terminal size={18} aria-hidden="true" /></span>
           <span className="hidden sm:inline">{t('appName')}</span>
         </Link>
         <form onSubmit={onSearch} className="mx-2 flex min-w-0 flex-1 items-center sm:mx-4" role="search">
@@ -42,7 +42,7 @@ export function Layout() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder={t('search')}
-              className="w-full rounded border border-white/20 bg-white/10 py-1.5 pl-8 pr-2 text-sm text-white placeholder:text-white/60 focus:border-white/60 focus:outline-none"
+              className="w-full rounded-full border border-white/25 bg-white/15 py-1.5 pl-8 pr-3 text-sm text-white placeholder:text-white/70 focus:border-white/70 focus:outline-none"
             />
           </label>
         </form>

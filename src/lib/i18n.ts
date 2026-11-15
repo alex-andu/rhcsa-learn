@@ -4,6 +4,16 @@ import { useStore } from './storage';
 const dict = {
   appName: { ro: 'RHCSA Study LMS', en: 'RHCSA Study LMS' },
   dashboard: { ro: 'Panou', en: 'Dashboard' },
+  welcomeNew: { ro: 'Bine ai venit!', en: 'Welcome!' },
+  welcomeBack: { ro: 'Bine ai revenit!', en: 'Welcome back!' },
+  welcomeText: {
+    ro: 'Aici înveți pas cu pas pentru RHCSA (EX200): citești capitolul, faci laboratorul pe node1 și node2, apoi te verifici cu simularea cronometrată.',
+    en: 'Learn step by step for RHCSA (EX200): read the chapter, do the lab on node1 and node2, then check yourself with the timed simulation.',
+  },
+  statChapters: { ro: 'capitole terminate', en: 'chapters done' },
+  statLabSteps: { ro: 'pași de laborator bifați', en: 'lab steps checked' },
+  statSims: { ro: 'simulări încercate', en: 'simulations tried' },
+  allDone: { ro: 'Ai terminat toate capitolele. Reia simularea completă din 6.1!', en: 'You finished every chapter. Retake the full simulation in 6.1!' },
   modules: { ro: 'Module', en: 'Modules' },
   glossary: { ro: 'Glosar', en: 'Glossary' },
   settings: { ro: 'Setări & backup', en: 'Settings & backup' },
