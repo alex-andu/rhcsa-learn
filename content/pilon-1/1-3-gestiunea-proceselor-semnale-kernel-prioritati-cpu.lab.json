@@ -1,0 +1,31 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Simularea Stărilor Proceselor, Semnalelor și Priorităților `nice` / `renice`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Pornim un proces consumator de CPU în background (&) cu valoarea nice +10:\n[root@node1 ~]# nice -n 10 sha1sum /dev/zero &\n[1] 5421\n\n# 2. Verificăm PID-ul, starea (R = Running) și valoarea NI (Nice = 10):\n[root@node1 ~]# ps -o pid,ppid,stat,pri,ni,pcpu,comm -p 5421\n    PID    PPID STAT PRI  NI %CPU COMMAND\n   5421    2104 RN     9  10 99.5 sha1sum\n\n# 3. Modificăm dinamic prioritatea procesului activ la -5 folosind renice:\n[root@node1 ~]# renice -n -5 -p 5421\n5421 (process ID) old priority 10, new priority -5\n\n# 4. Înghețăm procesul în memorie (Starea T - Stopped) trimițându-i semnalul SIGSTOP:\n[root@node1 ~]# kill -STOP 5421\n[root@node1 ~]# ps -o pid,stat,ni,comm -p 5421\n    PID STAT  NI COMMAND\n   5421 T<    -5 sha1sum\n\n# 5. Îl repornim în background cu SIGCONT și apoi îl oprim definitiv cu SIGTERM (15):\n[root@node1 ~]# kill -CONT 5421\n[root@node1 ~]# kill -15 5421\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Configurarea unui Job `cron` pentru un Utilizator (Scenariul Oficial EX200)"
+      },
+      "action": {
+        "ro": "Cerință: Configurați un job `cron` pentru utilizatorul `natasha` care să ruleze din 2 în 2 minute și să scrie mesajul `\"RHCSA_CRON_OK\"` în jurnalul de sistem folosind `/usr/bin/logger`.\n\n```bash\n# 1. Verificăm că serviciul crond este activ și enabled la boot!\n[root@node1 ~]# systemctl enable --now crond\n[root@node1 ~]# systemctl status crond\n\n# 2. Deschidem crontab-ul utilizatorului natasha cu crontab -e -u natasha\n# (Sau îl injectăm curat fără editor interactiv):\n[root@node1 ~]# echo '*/2 * * * * /usr/bin/logger \"RHCSA_CRON_OK\"' | crontab -u natasha -\n\n# 3. Verificăm OBLIGATORIU cu crontab -l și în /var/spool/cron/natasha:\n[root@node1 ~]# crontab -l -u natasha\n*/2 * * * * /usr/bin/logger \"RHCSA_CRON_OK\"\n\n# 4. După 2 minute, verificăm în journalctl că jobul s-a executat cu succes!\n[root@node1 ~]# journalctl -n 20 | grep \"RHCSA_CRON_OK\"\n```"
+      }
+    },
+    {
+      "id": "pas-3",
+      "title": {
+        "ro": "Crearea unui `systemd Timer` Modern (`.service` + `.timer`)"
+      },
+      "action": {
+        "ro": "Să creăm un timer de sistem numit `sys-heartbeat.timer` care să ruleze la fiecare 1 minut și să scrie `uptime`-ul serverului în `/var/log/heartbeat.log`:\n\n```bash\n# 1. Creăm unitatea de serviciu /etc/systemd/system/sys-heartbeat.service:\ncat << 'EOF' > /etc/systemd/system/sys-heartbeat.service\n[Unit]\nDescription=System Heartbeat Logger Service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/sh -c '/usr/bin/uptime >> /var/log/heartbeat.log'\nEOF\n\n# 2. Creăm unitatea de timer /etc/systemd/system/sys-heartbeat.timer:\ncat << 'EOF' > /etc/systemd/system/sys-heartbeat.timer\n[Unit]\nDescription=Run System Heartbeat every minute\n\n[Timer]\nOnBootSec=1min\nOnUnitActiveSec=1min\nAccuracySec=1s\n\n[Install]\nWantedBy=timers.target\nEOF\n\n# 3. Reîncărcăm daemonul systemd, testăm serviciul manual o dată și activăm persistent TIMER-ul:\n[root@node1 ~]# systemctl daemon-reload\n[root@node1 ~]# systemctl start sys-heartbeat.service\n[root@node1 ~]# systemctl enable --now sys-heartbeat.timer\n\n# 4. Verificăm starea timer-ului și fișierul de log generat:\n[root@node1 ~]# systemctl list-timers sys-heartbeat.timer\n[root@node1 ~]# cat /var/log/heartbeat.log\n```"
+      }
+    }
+  ]
+}

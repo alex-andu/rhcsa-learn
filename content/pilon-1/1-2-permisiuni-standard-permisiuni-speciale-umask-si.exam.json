@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este codul octal de 4 cifre pentru un director care are **și SGID, și Sticky Bit** activate, oferă `rwx` pentru proprietar și grup, și `---` pentru alții?"
+      },
+      "answer": {
+        "ro": "Codul octal este **`3770`** (`2000` SGID + `1000` Sticky Bit = `3000`, plus `0770` pentru `rwx` la owner și grup)."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă rulezi `ls -l` pe un fișier și vezi `-rw-rwxr--+`, ce reprezintă acel `rwx` din mijloc (al grupului)?"
+      },
+      "answer": {
+        "ro": "Când există semnul `+` (ACL activ), cei 3 biți din mijloc afișați de `ls -l` reprezintă **ACL Mask (`mask::rwx`)**, adică permisiunile maxime efective permise pentru intrările ACL și grup!"
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Ce valoare `umask` trebuie setată pentru ca fișierele noi să primească `0640` (`-rw-r-----`) și directoarele noi să primească `0750` (`drwxr-x---`)?"
+      },
+      "answer": {
+        "ro": "**`umask 0027`**."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Un fișier `/tmp/test.txt` aparține lui `root:root` și are permisiunile `0400` (`-r--------`). Dacă acest fișier se află într-un director `/data/public` care are permisiunile `0777` (**fără Sticky Bit!**), poate utilizatorul neprivilegiat `student` să șteargă fișierul lui `root` cu `rm -f /data/public/test.txt`? De ce?"
+      },
+      "answer": {
+        "ro": "**DA!** Utilizatorul `student` poate șterge fișierul lui `root` fără nicio problemă! De ce? Pentru că ștergerea unui fișier (`unlink()`) este o operațiune de modificare a **Directorului** (`/data/public`), nu a fișierului în sine! Cum `/data/public` are permisiuni `0777` și nu are *Sticky Bit*, oricine poate șterge orice Dentry din acel director!"
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Ce comandă folosești pentru a șterge complet toate regulile ACL de pe un fișier, aducându-l înapoi la permisiunile standard DAC?"
+      },
+      "answer": {
+        "ro": "**`setfacl -b <fisier>`** (*remove all base ACL entries*)."
+      }
+    }
+  ]
+}

@@ -21,6 +21,7 @@ La fiecare etapă: rulează `build`, `lint`, `test:e2e` înainte de commit.
 Teoria cursului o scrie Alex. Claude se ocupă **doar de integrarea ei în platformă**: nu scrie, nu cercetează și nu rescrie lecții.
 
 - Capitolele lui Alex sunt în `surse-alex/` (`capitolul_X_Y_*.md`, plus `cuprins.md` când există).
+- Cuprins: `node scripts/generate-cuprins.mjs surse-alex` îl generează din capitole (cerut de Alex; titlurile pilonilor sunt în script). Dacă Alex trimite propriul `cuprins.md`, nu mai rula generatorul.
 - Import: `node scripts/import-alex.mjs surse-alex`. Scriptul:
   - cu `cuprins.md`: îl transformă în `content/modules.json` (Pilonii = module, Capitolele = capitole, cu subiectele din cuprins), păstrând id-urile capitolelor deja existente;
   - fără `cuprins.md`: adaugă în `modules.json` pilonul și capitolul fiecărui fișier („Pilonul N”, titlul din `# Capitolul X.Y:`, nota „Ponderea în EX200”);

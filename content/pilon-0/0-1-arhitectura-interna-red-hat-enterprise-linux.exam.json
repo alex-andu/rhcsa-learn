@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare (Troubleshooting & Arhitectură)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Un coleg administrator a creat un script de monitorizare care își salvează baza de date SQLite în `/run/monitoring/db.sqlite`. După un *maintenance window* în care serverul a fost repornit, toată baza de date a dispărut. De ce s-a întâmplat asta și în ce director conform standardului FHS ar fi trebuit stocată baza de date?"
+      },
+      "answer": {
+        "ro": "**De ce a dispărut `/run/monitoring/db.sqlite` la reboot?** Directorul `/run` este montat în memoria RAM (`tmpfs`) și este destinat exclusiv datelor volatile de runtime (PID files, sockets). Conform standardului FHS (`man file-hierarchy`), datele persistente de stare și bazele de date ale aplicațiilor trebuie stocate în **`/var/lib/<nume_aplicatie>/`** (de exemplu, `/var/lib/monitoring/db.sqlite`), care se află pe discul persistent XFS."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "În timpul examenului EX200, vrei să instalezi un pachet, dar ai uitat dacă utilitarul se află în `/bin`, `/sbin`, `/usr/bin` sau `/usr/sbin`. Are vreo importanță diferența dintre `/bin` și `/usr/bin` pe un sistem RHEL 9 sau RHEL 10? De ce?"
+      },
+      "answer": {
+        "ro": "**Diferența dintre `/bin` și `/usr/bin` în RHEL 9 / 10:** Nu mai există nicio diferență funcțională! Datorită arhitecturii **`UsrMerge`**, `/bin` este doar un *Symbolic Link* către `/usr/bin` (`lrwxrwxrwx. /bin -> usr/bin`), iar `/sbin` este un *Symbolic Link* către `/usr/sbin`. Indiferent dacă apelezi `/bin/bash` sau `/usr/bin/bash`, kernelul deschide exact același fișier binar de pe disc."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Rulezi comanda `ls -l /dev/sda2` și observi la începutul liniei permisiunile `brw-rw----`. Ce semnifică litera `b` și prin ce diferă la nivel de kernel de un dispozitiv marcat cu litera `c`?"
+      },
+      "answer": {
+        "ro": "**`b` vs. `c` în `/dev`:** Litera `b` indică un **Block Device** (cum sunt discurile și partițiile), care transferă datele în blocuri de dimensiune fixă, permite acces aleatoriu (*seeking*) și beneficiază de *Page Cache* în memoria RAM a kernelului. Litera `c` indică un **Character Device** (terminale `tty`, `/dev/null`), care transmite datele ca un flux secvențial de octeți caracter cu caracter, fără *caching* intermediar."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "O aplicație din *User Space* rulează sub contul de `root` (`UID 0`). Înseamnă asta că aplicația rulează în *Kernel Space (Ring 0)*? Argumentează tehnic."
+      },
+      "answer": {
+        "ro": "**Procesul `root` (`UID 0`) rulează în Ring 0?** **NU!** Aceasta este o capcană clasică de interviu. Toate procesele — chiar și un shell `bash` sau un proces pornit de superutilizatorul `root` (`UID 0`) — rulează tot în **User Space (Ring 3)**! Diferența este că atunci când un proces cu `UID 0` (și toate *Linux Capabilities* active) face un **System Call** către *Kernel Space (Ring 0)*, kernelul îi aprobă cererile administrative (cum ar fi montarea unui disc sau schimbarea IP-ului), atâta timp cât și politica **SELinux** (*Mandatory Access Control*) permite acea acțiune!"
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Ai uitat în timpul examenului care este sintaxa unui fișier din `/etc/tmpfiles.d/`. Ce comandă exactă rulezi pentru a găsi pagina de manual aferentă și cum găsești exemplele în mai puțin de 5 secunde?"
+      },
+      "answer": {
+        "ro": "**Cum găsim pagina de manual și exemplele pentru `/etc/tmpfiles.d/`:** Rulăm `man -k tmpfiles` (sau direct `man tmpfiles.d`), apoi în interiorul paginii apăsăm `/EXAMPLES` și tasta `Enter` pentru a sări direct la exemplele de configurare gata scrise."
+      }
+    }
+  ]
+}

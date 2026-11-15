@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "De ce nu este recomandat să folosești comanda `chcon` în examenul EX200 pentru a schimba contextul SELinux al unui director nou creat?"
+      },
+      "answer": {
+        "ro": "Deoarece `chcon` modifică doar atributul extins de pe Inode, fără a salva regula în baza de date de politici SELinux (`/etc/selinux/targeted/contexts/files/file_contexts.local`). La o rulare a comenzii `restorecon` sau la un `/.autorelabel`, eticheta pusă cu `chcon` este suprascrisă!"
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă muți un fișier cu `mv /root/test.html /var/www/html/`, ce context SELinux va avea fișierul `/var/www/html/test.html` și cum îl repari cu o singură comandă?"
+      },
+      "answer": {
+        "ro": "La mutare (`mv`), fișierul își păstrează contextul directorului sursă (`/root`), adică **`admin_home_t`**. Îl reparăm instantaneu rulând **`restorecon -v /var/www/html/test.html`**."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Ce pagină de manual deschizi în timpul examenului pentru a copia direct exemplul de sintaxă `semanage fcontext -a -t ...`?"
+      },
+      "answer": {
+        "ro": "**`man semanage-fcontext`** (la secțiunea `EXAMPLES`)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce se întâmplă dacă rulezi `setsebool httpd_enable_homedirs on` fără flag-ul `-P`?"
+      },
+      "answer": {
+        "ro": "Fără flag-ul **`-P`**, boolean-ul este modificat doar în memoria RAM și revine la `off` imediat după reboot!"
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Care este comanda cu care verifici în `firewalld` ce servicii și porturi sunt active **în acest moment în Kernel (Runtime)**?"
+      },
+      "answer": {
+        "ro": "**`firewall-cmd --list-all`** (fără `--permanent`)."
+      }
+    }
+  ]
+}

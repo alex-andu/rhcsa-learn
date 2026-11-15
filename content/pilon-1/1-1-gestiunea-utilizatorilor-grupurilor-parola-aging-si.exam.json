@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este diferența exactă dintre `usermod -g ops_team alison` și `usermod -aG ops_team alison`?"
+      },
+      "answer": {
+        "ro": "`-g ops_team` îi schimbă **Grupul Primar (Primary Group)** în `ops_team`. `-aG ops_team` îi adaugă `ops_team` în lista de **Grupuri Secundare (Supplementary Groups)**, păstrându-i grupul primar și celelalte grupuri secundare intacte."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă te uiți în `/etc/shadow` și vezi că al treilea câmp (după hash-ul parolei) este `0`, ce se va întâmpla când acel utilizator se va conecta prin SSH?"
+      },
+      "answer": {
+        "ro": "Când câmpul 3 (*Last Password Change*) din `/etc/shadow` este `0`, sistemul îl forțează pe utilizator să își schimbe parola imediat la autentificare, înainte de a-i deschide shell-ul."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "De ce este periculos să editezi `/etc/sudoers` direct cu `vim /etc/sudoers` în loc de `visudo` (sau fără a rula `visudo -c`)?"
+      },
+      "answer": {
+        "ro": "Pentru că `vim` nu validează gramatica specifică `sudoers`. O singură greșeală de sintaxă în `/etc/sudoers` blochează complet comanda `sudo` pe tot serverul. `visudo` blochează fișierul împotriva editării simultane și refuză salvarea dacă există erori de sintaxă."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Cum setezi data de expirare a contului unui contractor (`alison`) pentru data de `31 Decembrie 2027` folosind comanda `chage`?"
+      },
+      "answer": {
+        "ro": "`chage -E 2027-12-31 alison`."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Unde își caută comanda `useradd` fișierele implicite pe care le copiază în `/home/<username>` atunci când creează un utilizator nou?"
+      },
+      "answer": {
+        "ro": "În directorul **`/etc/skel/`**."
+      }
+    }
+  ]
+}

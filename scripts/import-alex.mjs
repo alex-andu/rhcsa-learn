@@ -55,8 +55,12 @@ const modulesPath = join(CONTENT, 'modules.json');
 let modules = existsSync(modulesPath) ? JSON.parse(read(modulesPath)) : [];
 if (existsSync(join(SRC, 'cuprins.md'))) {
   const lines = read(join(SRC, 'cuprins.md')).split('\n');
-  // Keep the ids of chapters that already exist, so saved progress stays attached to them.
-  const oldIds = new Map(modules.flatMap((m) => m.chapters.map((c) => [c.number, c.id])));
+  // Keep the ids of chapters that already have a lesson, so saved progress stays attached to them.
+  const oldIds = new Map(
+    modules.flatMap((m) =>
+      m.chapters.filter((c) => existsSync(join(CONTENT, m.id, `${c.id}.ro.md`))).map((c) => [c.number, c.id]),
+    ),
+  );
   modules = [];
   let mod = null;
   let chap = null;
@@ -205,7 +209,9 @@ function parseLab(body) {
 function parseExam(body, file) {
   const blocks = splitAt(body, /^###\s+(.+)$/);
   const intro = trimRules(blocks[0].body);
-  const timerMinutes = Number(/cronometrul pe \*\*(\d+)/i.exec(intro)?.[1] ?? 0) || undefined;
+  // "Pune-ți cronometrul pe **15 minute**", or for the full mock exam (6.1) "Timp de lucru: 3 Ore / 180 Minute".
+  const timerMinutes =
+    Number((/cronometrul pe \*\*(\d+)/i.exec(intro) ?? /\/\s*(\d+)\s*Minute/i.exec(intro))?.[1] ?? 0) || undefined;
   const tasks = [];
   let recallTitle = '';
   let questionsBody = '';
@@ -243,6 +249,7 @@ function parseExam(body, file) {
 }
 
 const SECTION_OF = [
+  [/^REZOLVAREA/i, 'solution'], // 6.1: the mock exam's full solution is its own "## 6." section
   [/SIMULARE/i, 'exam'],
   [/INTRODUCEREA/i, 'analogy'],
   [/ARHITECTUR/i, 'architecture'],

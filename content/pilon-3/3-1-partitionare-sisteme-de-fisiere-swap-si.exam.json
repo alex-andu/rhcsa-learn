@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "De ce nu trebuie să folosim niciodată `/dev/sdb1` în prima coloană din `/etc/fstab`?"
+      },
+      "answer": {
+        "ro": "Deoarece numele de dispozitive `/dev/sdX` sunt alocate dinamic de kernel în ordinea descoperirii la boot și se pot schimba dacă se adaugă sau se elimină un disc, ducând la montarea partiției greșite sau la Emergency Mode."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă adaugi o linie nouă în `/etc/fstab`, ce două comenzi trebuie să rulezi obligatoriu înainte de a părăsi subiectul pentru a verifica că sintaxa este corectă și că `systemd` a preluat-o?"
+      },
+      "answer": {
+        "ro": "**`systemctl daemon-reload`** urmat de **`mount -a`** (și `swapon -a` dacă am adăugat swap)."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Se poate micșora (*shrink*) o partiție formatată cu sistemul de fișiere XFS? Dar una formatată cu ext4?"
+      },
+      "answer": {
+        "ro": "XFS **NU** poate fi micșorat niciodată (doar mărit). ext4 poate fi micșorat, dar numai offline (demontat)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce comandă folosești pentru a schimba eticheta (`LABEL`) unei partiții XFS deja formatate (în timp ce este demontată)?"
+      },
+      "answer": {
+        "ro": "**`xfs_admin -L \"NOU_LABEL\" /dev/vdbX`**."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Ce permisiuni octale trebuie să aibă obligatoriu un fișier swap (`/swapfile`) înainte de a rula `swapon` pe el?"
+      },
+      "answer": {
+        "ro": "**`0600`** (`-rw-------`)."
+      }
+    }
+  ]
+}

@@ -136,8 +136,8 @@ try {
   await page.getByRole('heading', { name: 'Curriculum' }).first().waitFor();
   const nMods = await page.locator('section[data-module]').count();
   const nChaps = await page.locator('li[data-chapter]').count();
-  check(nMods === 5 && nChaps === 17, `curriculum lists all pillars and chapters from cuprins.md (${nMods} modules, ${nChaps} chapters)`);
-  check((await page.getByText('(planificat)').count()) === 12, 'the 12 chapters without a lesson show as planned');
+  check(nMods === 7 && nChaps === 16, `curriculum lists all pillars and chapters from cuprins.md (${nMods} modules, ${nChaps} chapters)`);
+  check((await page.getByText('(planificat)').count()) === 0, 'every chapter in the curriculum has a lesson');
   check((await page.locator(`li[data-chapter="${KEY}"] a`).count()) === 1, 'available lesson is linked from curriculum');
   await page.screenshot({ path: 'screenshots/06-curriculum.png', fullPage: true });
 

@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Experimentul Practic cu Inode-uri, Hard Links și Symbolic Links"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Creăm un director de laborator și un fișier original:\n[root@node1 ~]# mkdir -p /root/links_lab\n[root@node1 ~]# echo \"Secret RHCSA 300/300\" > /root/links_lab/original.txt\n\n# 2. Inspectăm numărul de Inode (-i) și contorul de Hard Links (coloana a 3-a după Inode):\n[root@node1 ~]# ls -li /root/links_lab/\n67149210 -rw-r--r--. 1 root root 21 Nov 12 11:00 original.txt\n\n# 3. Creăm un HARD LINK și un SYMBOLIC LINK (cu cale absolută!):\n[root@node1 ~]# ln /root/links_lab/original.txt /root/links_lab/hardlink.txt\n[root@node1 ~]# ln -s /root/links_lab/original.txt /root/links_lab/symlink.txt\n\n# 4. Comparăm Inode-urile și contorul de link-uri:\n[root@node1 ~]# ls -li /root/links_lab/\n67149210 -rw-r--r--. 2 root root 21 Nov 12 11:00 hardlink.txt\n67149210 -rw-r--r--. 2 root root 21 Nov 12 11:00 original.txt\n67149211 lrwxrwxrwx. 1 root root 28 Nov 12 11:01 symlink.txt -> /root/links_lab/original.txt\n\n# 5. Ștergem fișierul original.txt și vedem cine supraviețuiește!\n[root@node1 ~]# rm -f /root/links_lab/original.txt\n[root@node1 ~]# cat /root/links_lab/hardlink.txt\nSecret RHCSA 300/300\n[root@node1 ~]# cat /root/links_lab/symlink.txt\ncat: /root/links_lab/symlink.txt: No such file or directory\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Căutări Avansate cu `find` și Arhivare cu `tar`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Găsim toate binarele din /usr/bin care au bitul SUID (4000) activat:\n[root@node1 ~]# find /usr/bin -perm -4000 -ls\n\n# 2. Creăm 3 arhive ale directorului /etc/ssh folosind cele 3 metode de compresie și le verificăm cu 'file':\n[root@node1 ~]# tar -czf /root/ssh_backup.tar.gz /etc/ssh\n[root@node1 ~]# tar -cjf /root/ssh_backup.tar.bz2 /etc/ssh\n[root@node1 ~]# tar -cJf /root/ssh_backup.tar.xz /etc/ssh\n\n[root@node1 ~]# file /root/ssh_backup.tar.*\n/root/ssh_backup.tar.bz2: bzip2 compressed data, block size = 900k\n/root/ssh_backup.tar.gz:  gzip compressed data, from Unix, original size modulo 2^32 30720\n/root/ssh_backup.tar.xz:  XZ compressed data, checksum CRC64\n```"
+      }
+    }
+  ]
+}

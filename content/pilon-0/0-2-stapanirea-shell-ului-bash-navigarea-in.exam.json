@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "De ce comanda `echo \"Salut $USER\"` afișează `Salut root`, dar comanda `echo 'Salut $USER'` afișează `$USER`?"
+      },
+      "answer": {
+        "ro": "Ghilimelele duble (`\"...\"`) permit *Variable Expansion* (`$USER` este înlocuit de `bash` cu valoarea variabilei), în timp ce ghilimelele simple (`'...'`) tratează fiecare caracter 100% literal."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Vrei să citești în timpul examenului documentația pentru formatul fișierului `/etc/exports` (folosit la NFS) sau `/etc/fstab`. În ce secțiune numerotată a comenzii `man` se află formatele fișierelor de configurare?"
+      },
+      "answer": {
+        "ro": "Secțiunea **`5`** (*File formats and conventions* — ex: `man 5 exports`, `man 5 fstab`)."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "În editorul `vim`, ești pe linia 10 a fișierului `/etc/fstab` și vrei să inserezi direct în fișier rezultatul comenzii `blkid /dev/vda1` fără a părăsi editorul. Ce tastezi exact în `vim`?"
+      },
+      "answer": {
+        "ro": "Apăsăm `ESC` pentru a fi în *Normal Mode*, apoi tastăm **`:r !blkid /dev/vda1`** și apăsăm `Enter`."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Care este diferența dintre `grep \"ab*\" fisier.txt` și `ls ab*`?"
+      },
+      "answer": {
+        "ro": "În `ls ab*` (*Bash Globbing*), `*` înseamnă „orice șir de caractere după `ab`” (potrivește `ab`, `abc`, `ab_orice.txt`). În `grep \"ab*\"` (*Regex*), `*` se aplică doar caracterului precedent (`b`), însemnând „caracterul `a` urmat de zero sau mai multe litere `b`” (potrivește chiar și litera `a` singură!)."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Un candidat rulează `export MY_VAR=\"test\"` în terminal și verifică cu `echo $MY_VAR` că funcționează. După terminarea examenului, primește 0 puncte pe acel task. De ce?"
+      },
+      "answer": {
+        "ro": "Comanda `export` rulată direct în terminal salvează variabila doar în memoria RAM a procesului `bash` curent. La reboot-ul din timpul evaluării, procesul dispare și variabila se pierde. Trebuia scrisă în `~/.bashrc` sau `/etc/profile.d/`."
+      }
+    }
+  ]
+}

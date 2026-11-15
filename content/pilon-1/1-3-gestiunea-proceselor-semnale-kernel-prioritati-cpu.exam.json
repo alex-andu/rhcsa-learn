@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "Care este semnalul implicit trimis de comanda `kill 4321` atunci când nu specifici niciun parametru, și prin ce diferă de `kill -9 4321`?"
+      },
+      "answer": {
+        "ro": "Semnalul implicit este **`SIGTERM (15)`**, care îi permite procesului să își închidă conexiunile și să salveze datele curat. **`SIGKILL (9)`** omoară procesul instantaneu din kernel, fără posibilitate de salvare sau curățare."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "De ce un utilizator obișnuit (`alison`) poate rula `renice -n 10 -p <PID_propriu>`, dar dacă încearcă ulterior să revină la `0` cu `renice -n 0 -p <PID_propriu>` primește eroarea `Permission denied`?"
+      },
+      "answer": {
+        "ro": "Utilizatorii neprivilegiați au voie doar să **scadă prioritatea** (adică să **crească** numărul `nice` spre `+19`). Scăderea valorii `nice` (chiar și de la `10` înapoi la `0`) înseamnă creșterea priorității de CPU și este permisă exclusiv utilizatorului `root` (sau unui proces cu capabilitatea `CAP_SYS_NICE`)!"
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Cum arată expresia celor 5 câmpuri de timp în `crontab` pentru un job care trebuie să ruleze **din 3 în 3 minute**?"
+      },
+      "answer": {
+        "ro": "**`*/3 * * * *`**."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Ce fișier trebuie creat pentru a bloca accesul tuturor utilizatorilor la comanda `crontab`, cu excepția celor specificați explicit pe o listă albă (*whitelist*)?"
+      },
+      "answer": {
+        "ro": "**`/etc/cron.allow`**."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Când creezi un `systemd timer` (`app.timer` + `app.service`), pe care dintre cele două unități rulezi `systemctl enable --now`?"
+      },
+      "answer": {
+        "ro": "Pe unitatea **`.timer`** (`systemctl enable --now app.timer`), deoarece timerul este cel care trebuie să pornească la boot și să declanșeze periodic unitatea `.service`!"
+      }
+    }
+  ]
+}

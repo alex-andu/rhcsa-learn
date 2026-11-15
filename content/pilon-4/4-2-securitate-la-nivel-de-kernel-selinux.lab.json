@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Instalarea și Crearea „Problemei” de Examen pe `node1`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Instalăm serverul web Apache (httpd) și uneltele SELinux (policycoreutils-python-utils + setroubleshoot-server):\n[root@node1 ~]# dnf install -y httpd policycoreutils-python-utils setroubleshoot-server\n\n# 2. Verificăm că SELinux este în modul Enforcing:\n[root@node1 ~]# getenforce\nEnforcing\n\n# 3. Creăm directorul non-standard /custom_web și o pagină index.html:\n[root@node1 ~]# mkdir -p /custom_web\n[root@node1 ~]# echo \"RHCSA EX200 - Server Web pe Portul 82 din /custom_web\" > /custom_web/index.html\n\n# 4. Observăm ce context SELinux a primit /custom_web la creare (a primit default_t!):\n[root@node1 ~]# ls -ldZ /custom_web\ndrwxr-xr-x. 2 root root unconfined_u:object_r:default_t:s0 24 Nov 13 15:00 /custom_web\n\n# 5. Modificăm /etc/httpd/conf/httpd.conf să asculte pe portul 82 și să aibă DocumentRoot în /custom_web:\n[root@node1 ~]# sed -i 's/^Listen 80$/Listen 82/' /etc/httpd/conf/httpd.conf\n[root@node1 ~]# sed -i 's|\"/var/www/html\"|\"/custom_web\"|g' /etc/httpd/conf/httpd.conf\n\n# 6. Încercăm să pornim httpd — ȘI VEDEM CUM EȘUEAZĂ DIN CAUZA PORTULUI 82 ÎN SELINUX!\n[root@node1 ~]# systemctl start httpd\nJob for httpd.service failed because the control process exited with error code.\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Diagnosticarea și Rezolvarea Completă (SELinux `port` + `fcontext` + `firewalld`)"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Verificăm în audit.log / journalctl de ce nu a pornit httpd:\n[root@node1 ~]# ausearch -m AVC -ts recent\n# Vedem: avc: denied { name_bind } for pid=... comm=\"httpd\" src=82 scontext=...:httpd_t tcontext=...:reserved_port_t\n\n# 2. REZOLVAREA #1: Autorizăm portul 82/tcp în SELinux cu eticheta http_port_t:\n[root@node1 ~]# semanage port -a -t http_port_t -p tcp 82\n[root@node1 ~]# semanage port -l | grep -w http_port_t\n\n# 3. Acum pornim și activăm la boot serviciul httpd (și vedem că pornește!):\n[root@node1 ~]# systemctl enable --now httpd\n\n# 4. REZOLVAREA #2: Schimbăm persistent contextul SELinux pe /custom_web în httpd_sys_content_t:\n[root@node1 ~]# semanage fcontext -a -t httpd_sys_content_t \"/custom_web(/.*)?\"\n[root@node1 ~]# restorecon -Rv /custom_web\nRelabeled /custom_web from unconfined_u:object_r:default_t:s0 to unconfined_u:object_r:httpd_sys_content_t:s0\nRelabeled /custom_web/index.html from unconfined_u:object_r:default_t:s0 to unconfined_u:object_r:httpd_sys_content_t:s0\n\n# 5. REZOLVAREA #3: Deschidem portul 82/tcp în firewalld în mod persistent:\n[root@node1 ~]# firewall-cmd --permanent --add-port=82/tcp\n[root@node1 ~]# firewall-cmd --reload\n[root@node1 ~]# firewall-cmd --list-ports\n\n# 6. TESTUL FINAL (atât local de pe node1, cât și prin rețea de pe node2!):\n[root@node1 ~]# curl http://node1.lab.example.com:82/index.html\nRHCSA EX200 - Server Web pe Portul 82 din /custom_web\n```"
+      }
+    }
+  ]
+}

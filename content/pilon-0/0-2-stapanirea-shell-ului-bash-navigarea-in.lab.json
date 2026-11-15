@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Configurarea Persistentă a Editorului `vim` pentru Examen"
+      },
+      "action": {
+        "ro": "La începutul examenului EX200, un truc de aur este să îți configurezi `~/.vimrc` astfel încât `vim` să îți afișeze mereu numerele de linie și să indenteze corect fișierele YAML/Containerfile/scripturi:\n\n```bash\n[root@node1 ~]# cat << 'EOF' > /root/.vimrc\nset number\nset autoindent\nset expandtab\nset tabstop=4\nset shiftwidth=4\nsyntax on\nEOF\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Variabile de Mediu, `$PATH` și Alias-uri Persistente (User vs. System-Wide)"
+      },
+      "action": {
+        "ro": "1. **Cerință de laborator:** Să presupunem că utilizatorul `student` are un director de scripturi proprii în `/home/student/scripts` și are nevoie ca acest director să fie în `$PATH`-ul său, plus un alias persistent numit `c` care să curețe ecranul (`clear`).\n   ```bash\n   # Creăm directorul de scripturi pentru student:\n   [root@node1 ~]# mkdir -p /home/student/scripts\n   [root@node1 ~]# chown -R student:student /home/student/scripts\n\n   # Adăugăm configurarea persistentă la finalul fișierului /home/student/.bashrc (folosind >> !)\n   [root@node1 ~]# cat << 'EOF' >> /home/student/.bashrc\n   export PATH=\"$PATH:/home/student/scripts\"\n   alias c='clear'\n   EOF\n\n   # Testăm atât cu Login Shell (su - student), cât și cu Non-Login Shell (su student):\n   [root@node1 ~]# su - student -c \"echo \\$PATH; alias c\"\n   ```\n\n2. **Cerință Globală (pentru toți utilizatorii din sistem):** Să creăm variabila globală `COMPANY_ENV=\"PRODUCTION_RHEL\"` pentru toți utilizatorii:\n   ```bash\n   [root@node1 ~]# echo 'export COMPANY_ENV=\"PRODUCTION_RHEL\"' > /etc/profile.d/company_env.sh\n   [root@node1 ~]# chmod 0644 /etc/profile.d/company_env.sh\n   ```"
+      }
+    },
+    {
+      "id": "pas-3",
+      "title": {
+        "ro": "Antrenament Chirurgical cu File Descriptors (`0`, `1`, `2`)"
+      },
+      "action": {
+        "ro": "Să generăm intenționat o comandă care produce **și un rezultat valid pe `stdout` (`FD 1`)**, **și o eroare pe `stderr` (`FD 2`)**: vom lista simultan directorul existent `/boot` și un director inexistent `/nu_exista`!\n\n```bash\n# 1. Rulăm comanda fără redirecționare (ambele fluxuri apar pe ecran):\n[root@node1 ~]# ls -ld /boot /nu_exista\nls: cannot access '/nu_exista': No such file or directory\ndr-xr-xr-x. 5 root root 4096 Nov 12 09:00 /boot\n\n# 2. Separăm chirurgical rezultatul bun în /tmp/valid.txt și eroarea în /tmp/eroare.txt:\n[root@node1 ~]# ls -ld /boot /nu_exista > /tmp/valid.txt 2> /tmp/eroare.txt\n\n# Verificăm cele două fișiere:\n[root@node1 ~]# cat /tmp/valid.txt\ndr-xr-xr-x. 5 root root 4096 Nov 12 09:00 /boot\n[root@node1 ~]# cat /tmp/eroare.txt\nls: cannot access '/nu_exista': No such file or directory\n\n# 3. Trimitem AMBELE fluxuri (stdout + stderr) în același fișier /tmp/complet.txt:\n[root@node1 ~]# ls -ld /boot /nu_exista &> /tmp/complet.txt\n[root@node1 ~]# cat /tmp/complet.txt\n```"
+      }
+    },
+    {
+      "id": "pas-4",
+      "title": {
+        "ro": "Antrenament `man` & `mandb` (Găsirea Sintaxei fără Internet)"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Actualizăm baza de date a paginilor de manual pe node1:\n[root@node1 ~]# mandb\n\n# 2. Căutăm toate paginile de manual din secțiunea 5 (Formate de fișiere de configurare) legate de cron:\n[root@node1 ~]# man -k cron | grep \"(5)\"\nanacrontab (5)       - configuration file for anacron\ncrontab (5)          - tables for driving cron (ISC Cron V4.1)\n\n# 3. Deschidem direct secțiunea 5 pentru crontab:\n[root@node1 ~]# man 5 crontab\n```"
+      }
+    }
+  ]
+}

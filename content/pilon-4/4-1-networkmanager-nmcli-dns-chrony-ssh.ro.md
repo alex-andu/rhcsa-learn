@@ -3,7 +3,7 @@ title: "4.1 Rețelistică în RHEL (NetworkManager / nmcli), DNS, Hostname și S
 summary: "Stăpânirea arhitecturii moderne de rețea din Red Hat Enterprise Linux (RHEL 9 / RHEL 10) bazată pe daemonul NetworkManager și noile fișiere de profil în format keyfile din /etc/NetworkManager/system-connections/*.nmconnection; înțelegerea diferenței…"
 order: 1
 origin: alex
-updated: "2026-11-14"
+updated: "2026-11-15"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței

@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Scenariul Rege EX200 — Directorul Colaborativ `/home/managers` cu SGID (`2770`)"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Creăm directorul /home/managers:\n[root@node1 ~]# mkdir -p /home/managers\n\n# 2. Schimbăm grupul proprietar în 'sysadmins':\n[root@node1 ~]# chown :sysadmins /home/managers\n\n# 3. Aplicăm permisiunile 2770 (SGID = 2, Owner = 7, Group = 7, Others = 0):\n[root@node1 ~]# chmod 2770 /home/managers\n\n# 4. Verificăm cu ls -ld:\n[root@node1 ~]# ls -ld /home/managers\ndrwxrws---. 2 root sysadmins 6 Nov 12 12:30 /home/managers\n\n# 5. TESTĂM CA LA EXAMEN:\n# a) Utilizatorul natasha (membru în sysadmins) creează un fișier în /home/managers:\n[root@node1 ~]# su - natasha -c \"touch /home/managers/plan_natasha.txt\"\n\n# b) Verificăm ce grup a primit automat fișierul creat de natasha:\n[root@node1 ~]# ls -l /home/managers/plan_natasha.txt\n-rw-r--r--. 1 natasha sysadmins 0 Nov 12 12:31 /home/managers/plan_natasha.txt\n# EXCELENT! Grupul este 'sysadmins' (moștenit prin SGID), NU grupul primar 'natasha'!\n\n# c) Verificăm că sarah (care NU e în sysadmins) primește Permission denied:\n[root@node1 ~]# su -s /bin/bash sarah -c \"ls /home/managers\"\nls: cannot open directory '/home/managers': Permission denied\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Scenariul Clasic EX200 — Permisiuni ACL pe `/var/tmp/fstab`"
+      },
+      "action": {
+        "ro": "Cerință: Copiați `/etc/fstab` în `/var/tmp/fstab`. Fișierul trebuie să aparțină lui `root:root`, să nu fie executabil de nimeni, `natasha` să aibă `rw-`, `harry` să aibă `---`, iar toți ceilalți utilizatori să aibă `r--`.\n\n```bash\n# 1. Copiem fișierul și verificăm proprietarul și permisiunile de bază ÎNAINTE de setfacl:\n[root@node1 ~]# cp /etc/fstab /var/tmp/fstab\n[root@node1 ~]# chown root:root /var/tmp/fstab\n[root@node1 ~]# chmod 0644 /var/tmp/fstab\n\n# 2. Aplicăm regulile ACL pentru natasha (rw-) și harry (---):\n[root@node1 ~]# setfacl -m u:natasha:rw- /var/tmp/fstab\n[root@node1 ~]# setfacl -m u:harry:--- /var/tmp/fstab\n\n# 3. Verificăm cu getfacl:\n[root@node1 ~]# getfacl /var/tmp/fstab\ngetfacl: Removing leading '/' from absolute path names\n# file: var/tmp/fstab\n# owner: root\n# group: root\nuser::rw-\nuser:natasha:rw-\nuser:harry:---\ngroup::r--\nmask::rw-\nother::r--\n\n# 4. Testăm practic că harry NU poate citi, dar natasha POATE citi:\n[root@node1 ~]# su - harry -c \"cat /var/tmp/fstab\"\ncat: /var/tmp/fstab: Permission denied\n[root@node1 ~]# su - natasha -c \"head -n 2 /var/tmp/fstab\"\n```"
+      }
+    }
+  ]
+}

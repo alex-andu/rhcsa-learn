@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Antrenament Cronometrat — Spargerea Parolei de `root` pe `node2.lab.example.com`"
+      },
+      "action": {
+        "ro": "Deschide consola virtuală (VM Console din `virt-manager` / VMware / VirtualBox) pentru `node2` și exersează chiar acum procedura până o poți face în sub 2 minute fără să te uiți pe notițe:\n\n```bash\n# 1. Dă Reboot la node2 și apasă 'e' în meniul GRUB2.\n# 2. La capătul liniei care începe cu 'linux', adaugă:\nrd.break\n# 3. Apasă Ctrl + x pentru a boota.\n# 4. La promptul switch_root:/#, execută exact cele 6 comenzi:\nswitch_root:/# mount -o remount,rw /sysroot\nswitch_root:/# chroot /sysroot\nsh-5.1# echo 'RedHatExam123!' | passwd --stdin root\nsh-5.1# touch /.autorelabel\nsh-5.1# ls -la /.autorelabel\nsh-5.1# exit\nswitch_root:/# exit\n```\n\nAșteaptă finalizarea reetichetării SELinux și conectează-te prin SSH de pe `node1` pe `node2` (`ssh root@192.168.122.102`) folosind parola `RedHatExam123!`!"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Configurarea GRUB2, Targets și `journald` Persistent pe `node1`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Setăm target-ul implicit de boot pe multi-user.target:\n[root@node1 ~]# systemctl set-default multi-user.target\n[root@node1 ~]# systemctl get-default\nmulti-user.target\n\n# 2. Modificăm timeout-ul GRUB2 la 10 secunde în /etc/default/grub și regenerăm grub.cfg:\n[root@node1 ~]# sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/' /etc/default/grub\n[root@node1 ~]# grub2-mkconfig -o /boot/grub2/grub.cfg\n\n# 3. Configurăm systemd-journald să stocheze logurile persistent pe disc în /var/log/journal:\n[root@node1 ~]# mkdir -p /var/log/journal\n[root@node1 ~]# systemd-tmpfiles --create --prefix /var/log/journal\n[root@node1 ~]# sed -i 's/^#*Storage=.*/Storage=persistent/' /etc/systemd/journald.conf\n[root@node1 ~]# systemctl restart systemd-journald\n[root@node1 ~]# ls -la /var/log/journal/\n```"
+      }
+    }
+  ]
+}

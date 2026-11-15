@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Partiționarea Discului `/dev/vdb` cu GPT (XFS, ext4 și Swap)"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Inspectăm discurile atașate pe node2:\n[root@node2 ~]# lsblk -fp\n\n# 2. Creăm o tabelă de partiții GPT pe /dev/vdb și 3 partiții folosind parted:\n# - Partiția 1 (/dev/vdb1): 2 GiB (pentru XFS)\n# - Partiția 2 (/dev/vdb2): 1 GiB (pentru ext4)\n# - Partiția 3 (/dev/vdb3): 512 MiB (pentru Swap)\n[root@node2 ~]# parted -s /dev/vdb mklabel gpt\n[root@node2 ~]# parted -s /dev/vdb mkpart xfs_part xfs 1MiB 2049MiB\n[root@node2 ~]# parted -s /dev/vdb mkpart ext4_part ext4 2049MiB 3073MiB\n[root@node2 ~]# parted -s /dev/vdb mkpart swap_part linux-swap 3073MiB 3585MiB\n\n# 3. Sincronizăm tabela de partiții cu kernelul și udev:\n[root@node2 ~]# partprobe /dev/vdb\n[root@node2 ~]# udevadm settle\n[root@node2 ~]# lsblk /dev/vdb\n```"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Formatarea și Montarea Persistentă prin UUID și LABEL în `/etc/fstab`"
+      },
+      "action": {
+        "ro": "```bash\n# 1. Formatăm /dev/vdb1 cu XFS și /dev/vdb2 cu ext4 (având LABEL-ul \"APP_EXT4\"):\n[root@node2 ~]# mkfs.xfs /dev/vdb1\n[root@node2 ~]# mkfs.ext4 -L \"APP_EXT4\" /dev/vdb2\n\n# 2. Formatăm /dev/vdb3 ca spațiu Swap:\n[root@node2 ~]# mkswap /dev/vdb3\n\n# 3. Creăm directoarele (punctele de montare) pe disc:\n[root@node2 ~]# mkdir -p /mnt/xfs_data /mnt/ext4_data\n\n# 4. Adăugăm intrările în /etc/fstab (folosind UUID pentru vdb1 și vdb3, și LABEL pentru vdb2):\n[root@node2 ~]# echo \"UUID=$(blkid -s UUID -o value /dev/vdb1)  /mnt/xfs_data   xfs   defaults  0 0\" >> /etc/fstab\n[root@node2 ~]# echo \"LABEL=APP_EXT4                            /mnt/ext4_data  ext4  defaults  0 0\" >> /etc/fstab\n[root@node2 ~]# echo \"UUID=$(blkid -s UUID -o value /dev/vdb3)  none            swap  defaults,pri=10  0 0\" >> /etc/fstab\n\n# 5. CELE 3 COMENZI SFINTE DE VALIDARE:\n[root@node2 ~]# systemctl daemon-reload\n[root@node2 ~]# mount -a\n[root@node2 ~]# swapon -a\n\n# 6. Verificăm că ambele partiții și noul swap sunt active:\n[root@node2 ~]# df -Th /mnt/xfs_data /mnt/ext4_data\n[root@node2 ~]# swapon --show\n```"
+      }
+    }
+  ]
+}

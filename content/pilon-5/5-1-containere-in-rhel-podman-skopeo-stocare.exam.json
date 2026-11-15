@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 20,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "De ce primești eroarea `Failed to connect to bus: No medium found` când rulezi `systemctl --user` după ce ai intrat pe contul utilizatorului cu `su - alison`, și cum trebuie să te conectezi corect?"
+      },
+      "answer": {
+        "ro": "Comanda `su -` nu inițializează o sesiune completă în `systemd-logind` și nu setează variabila `$XDG_RUNTIME_DIR`. Trebuie să ne conectăm prin **`ssh alison@localhost`**."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Ce rol are comanda `loginctl enable-linger alison` și ce se întâmplă la reboot dacă o uiți?"
+      },
+      "answer": {
+        "ro": "`loginctl enable-linger alison` creează un fișier în `/var/lib/systemd/linger/alison` care îi spune lui `systemd` să pornească managerul de servicii al utilizatorului `alison` imediat la boot-ul sistemului și să îl mențină activ chiar dacă `alison` nu este logată. Fără el, containerul nu pornește după reboot!"
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Ce context SELinux aplică flag-ul `:Z` pe directorul de pe host montat cu `-v /host/dir:/container/dir:Z`?"
+      },
+      "answer": {
+        "ro": "Aplică eticheta **`container_file_t`** (împreună cu nivelul MCS privat al containerului)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Care este rolul flag-ului `--new` în comanda `podman generate systemd --name mycont --files --new`?"
+      },
+      "answer": {
+        "ro": "Flag-ul `--new` instruiește unitatea `systemd` să creeze un container nou-nouț cu `podman run` la fiecare pornire a serviciului și să îl șteargă la oprire, în loc să depindă de starea unui container vechi."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Cu ce utilitar poți inspecta straturile și arhitectura unei imagini aflate într-un registru remote fără a o descărca local cu `podman pull`?"
+      },
+      "answer": {
+        "ro": "Utilitarul **`skopeo`** (`skopeo inspect docker://...`)."
+      }
+    }
+  ]
+}

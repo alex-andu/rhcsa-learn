@@ -1,0 +1,53 @@
+{
+  "timerMinutes": 15,
+  "recallTitle": {
+    "ro": "Partea B: Cele 5 Întrebări de Diagnosticare"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": {
+        "ro": "De ce nu poți crea un *Hard Link* pentru fișierul `/boot/vmlinuz-...` în directorul `/root/kernel_link` pe o instalare standard RHEL?"
+      },
+      "answer": {
+        "ro": "Deoarece `/boot` și `/root` (care se află pe `/`) sunt pe **partiții / sisteme de fișiere diferite** (`/dev/vda1` vs. `/dev/mapper/rhel-root`). *Hard Link-urile* nu pot traversa granița unui sistem de fișiere (`Invalid cross-device link`)."
+      }
+    },
+    {
+      "id": "q2",
+      "question": {
+        "ro": "Dacă rulezi `find / -perm -2000` vs. `find / -perm 2000`, care dintre cele două comenzi îți va găsi fișierele executabile reale care au SGID activat (de exemplu `rwxr-sr-x`, octal `2755`) și de ce cealaltă nu va returna nimic?"
+      },
+      "answer": {
+        "ro": "`find / -perm -2000` (cu liniuță `-`) este comanda corectă, deoarece caută fișierele care au **cel puțin** bitul SGID (`2000`) setat, pe lângă permisiunile obișnuite `rwxr-xr-x` (`0755`). Comanda `find / -perm 2000` (fără `-`) caută un fișier care are permisiunile **EXACT** `2000` (`--- -wS ---`, adică fără niciun drept de citire/scriere/execuție!)."
+      }
+    },
+    {
+      "id": "q3",
+      "question": {
+        "ro": "Cum verifici în timpul examenului EX200 că arhiva `/root/backup.tar.xz` este cu adevărat comprimată cu algoritmul `xz` și că conține fișierele cerute, fără a o dezarhiva pe disc?"
+      },
+      "answer": {
+        "ro": "Rulăm `file /root/backup.tar.xz` (pentru a confirma `XZ compressed data`) și apoi `tar -tf /root/backup.tar.xz` (pentru a lista tabla de materii fără extragere)."
+      }
+    },
+    {
+      "id": "q4",
+      "question": {
+        "ro": "Dacă folosești `find /home -user alex -exec cp {} /root/alex_files/ \\;` (fără flag-ul `-a` sau `-p` la `cp`), ce se întâmplă cu proprietarul și permisiunile speciale ale fișierelor copiate în `/root/alex_files/`?"
+      },
+      "answer": {
+        "ro": "Fără `cp -a` (sau `cp -p`), fișierele copiate de `root` vor deveni proprietatea lui `root:root` (pierzând proprietarul `alex`), vor pierde biții SUID/SGID și vor primi `mtime`-ul curent."
+      }
+    },
+    {
+      "id": "q5",
+      "question": {
+        "ro": "Care este comanda `grep` care afișează toate liniile active (necomentate cu `#` și negoale) dintr-un fișier de configurare?"
+      },
+      "answer": {
+        "ro": "`grep -Ev '^[[:space:]]*(#|$)' <fisier>`."
+      }
+    }
+  ]
+}

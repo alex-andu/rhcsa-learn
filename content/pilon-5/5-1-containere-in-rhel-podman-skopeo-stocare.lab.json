@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Instalarea `container-tools` și Construirea unei Imagini Locale pentru Laborator"
+      },
+      "action": {
+        "ro": "Pentru ca laboratorul tău să funcționeze 100% chiar și fără internet, vom construi rapid sau vom descărca o imagine de bază și o vom importa în contul utilizatorului `alison`:\n\n```bash\n# 1. Instalăm suita container-tools pe node1 (din DVD-ul local configurat în Cap. 2.2!):\n[root@node1 ~]# dnf install -y container-tools\n\n# 2. Activăm linger pentru utilizatorul alison:\n[root@node1 ~]# loginctl enable-linger alison\n[root@node1 ~]# loginctl show-user alison | grep Linger\nLinger=yes\n\n# 3. Ne conectăm OBLIGATORIU prin SSH ca utilizatorul alison!\n[root@node1 ~]# ssh alison@localhost\n```\n\n*(Dacă ai conexiune la internet pe VM-ul tău de acasă, poți trage direct imaginea oficială Red Hat UBI9 cu `podman pull registry.access.redhat.com/ubi9/httpd-24` sau `docker.io/library/httpd:alpine`!)*"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Rularea Containerului Rootless cu `:Z` și Configurarea Serviciului `systemd --user`"
+      },
+      "action": {
+        "ro": "În sesiunea SSH a utilizatorului **`alison`**:\n\n```bash\n# 1. Creăm directorul persistent pe host și un fișier index.html:\n[alison@node1 ~]$ mkdir -p /home/alison/site_content\n[alison@node1 ~]$ chmod 0777 /home/alison/site_content\n[alison@node1 ~]$ echo \"PODMAN_ROOTLESS_SYSTEMD_OK\" > /home/alison/site_content/index.html\n\n# 2. Pornim containerul rootless 'web_portal' mapând portul 8088 -> 8080 (sau 80) și volumul cu :Z:\n[alison@node1 ~]$ podman run -d --name web_portal \\\n    -p 8088:8080 \\\n    -v /home/alison/site_content:/var/www/html:Z \\\n    registry.access.redhat.com/ubi9/httpd-24\n\n# 3. Verificăm că directorul /home/alison/site_content a primit automat eticheta container_file_t:\n[alison@node1 ~]$ ls -ldZ /home/alison/site_content\ndrwxrwxrwx. 2 alison alison system_u:object_r:container_file_t:s0:c112,c845 24 Nov 13 15:30 /home/alison/site_content\n\n# 4. Generăm serviciul systemd în ~/.config/systemd/user/:\n[alison@node1 ~]$ mkdir -p ~/.config/systemd/user\n[alison@node1 ~]$ cd ~/.config/systemd/user\n[alison@node1 user]$ podman generate systemd --name web_portal --files --new\n\n# 5. Oprim și ștergem containerul manual și îl pornim prin systemd --user:\n[alison@node1 user]$ podman stop web_portal && podman rm web_portal\n[alison@node1 user]$ systemctl --user daemon-reload\n[alison@node1 user]$ systemctl --user enable --now container-web_portal.service\n\n# 6. Verificăm că serviciul este active (running) și răspunde pe portul 8088:\n[alison@node1 user]$ systemctl --user status container-web_portal.service\n[alison@node1 user]$ curl http://localhost:8088/index.html\nPODMAN_ROOTLESS_SYSTEMD_OK\n```"
+      }
+    }
+  ]
+}

@@ -3,7 +3,7 @@ title: "2.3 Automatizare prin Bash Scripting și Tuning de Performanță (tuned)
 summary: "Stăpânirea completă a cerințelor de Bash Scripting din examenul RHCSA (EX200) și din interviurile de DevOps: anatomia liniei Shebang (#!/bin/bash), variabilele poziționale și speciale ($0, $1, $2, $@, $*, $#, $?, $$), codurile de ieșire (Exit Codes 0–255),…"
 order: 3
 origin: alex
-updated: "2026-11-14"
+updated: "2026-11-15"
 ---
 
 > ### Obiectivul Capitolului, Ponderea în Examenul EX200 & Regula de Aur a Persistenței

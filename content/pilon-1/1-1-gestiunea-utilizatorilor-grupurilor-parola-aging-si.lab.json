@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "id": "pas-1",
+      "title": {
+        "ro": "Configurarea Șablonului `/etc/skel` și `/etc/login.defs`"
+      },
+      "action": {
+        "ro": "Să presupunem că în companie (sau în examen) ni se cere ca orice utilizator nou creat să primească automat în directorul său home un subdirector `workspace` și un fișier `SECURITY_POLICY.txt`:\n\n```\n# 1. Inspectăm conținutul actual al șablonului /etc/skel (inclusiv fișierele ascunse cu -a):\n[root@node1 ~]# ls -la /etc/skel/\ntotal 24\ndrwxr-xr-x.  3 root root   78 Nov 12 09:00 .\ndrwxr-xr-x. 86 root root 8192 Nov 12 11:30 ..\n-rw-r--r--.  1 root root   18 Aug 10  2021 .bash_logout\n-rw-r--r--.  1 root root  141 Aug 10  2021 .bash_profile\n-rw-r--r--.  1 root root  492 Aug 10  2021 .bashrc\n\n# 2. Adăugăm structura cerută în /etc/skel/:\n[root@node1 ~]# mkdir -p /etc/skel/workspace\n[root@node1 ~]# echo \"Respectati politicile SELinux si sudo!\" > /etc/skel/SECURITY_POLICY.txt\n\n```\n\n*(Orice apel `useradd` făcut de acum înainte va copia automat tot conținutul din `/etc/skel/` în `/home/<noul_user>/` și îi va schimba proprietarul pe noul utilizator!)*"
+      }
+    },
+    {
+      "id": "pas-2",
+      "title": {
+        "ro": "Scenariul Clasic de Examen EX200 (Grupuri, Utilizatori, `/sbin/nologin`, Parole și `sudo`)"
+      },
+      "action": {
+        "ro": "```\n# 1. Creăm grupul 'sysadmins' cu GID-ul specific 40000:\n[root@node1 ~]# groupadd -g 40000 sysadmins\n\n# 2. Creăm utilizatorii 'natasha' și 'harry' având 'sysadmins' ca grup secundar (-G):\n[root@node1 ~]# useradd -G sysadmins natasha\n[root@node1 ~]# useradd -G sysadmins harry\n\n# 3. Creăm utilizatorul 'sarah' fără acces la un shell interactiv (-s /sbin/nologin):\n[root@node1 ~]# useradd -s /sbin/nologin sarah\n\n# 4. Setăm parola 'flectrag' pentru toți cei 3 utilizatori fără riscul greșelilor de tastare:\n[root@node1 ~]# for u in natasha harry sarah; do echo 'flectrag' | passwd --stdin $u; done\n\n# 5. Verificăm identitatea, UID/GID-ul și shell-ul celor 3 utilizatori:\n[root@node1 ~]# id natasha\n[root@node1 ~]# id harry\n[root@node1 ~]# getent passwd natasha harry sarah\n\n# 6. Configurăm sudo fără parolă (NOPASSWD) pentru grupul 'sysadmins':\n[root@node1 ~]# echo \"%sysadmins ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/sysadmins\n[root@node1 ~]# chmod 0440 /etc/sudoers.d/sysadmins\n[root@node1 ~]# visudo -c\n\n# 7. TESTĂM OBLIGATORIU că natasha poate executa comenzi de root fără parolă!\n[root@node1 ~]# su - natasha -c \"sudo id\"\nuid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023\n\n```"
+      }
+    }
+  ]
+}
